@@ -1,0 +1,18 @@
+{
+    "AdminURL": "store.tcgplayer-stg.com/admin",
+    "email": "admin@auto.com",
+    "password": "P@ssw0rd!",
+  
+    "OrderNumber": "F417072D-B376C7-A67C0",
+    "ManageOrderPageURL": "https://store.tcgplayer-stg.com/admin/orders/manageorder/F417072D-B376C7-A67C0",
+   "PartialRefundPageURL": "https://store.tcgplayer-stg.com/admin/orders/partialRefund/F417072D-B376C7-A67C0?sellerKey=F417072D",
+
+   "aOrderNumber": "6D9FCCFA-EE225B-B1096",
+    "aManageOrderPageURL": "https://store.tcgplayer-qa.com/admin/orders/manageorder/6D9FCCFA-EE225B-B1096",
+    "aPartialRefundPageURL": "https://store.tcgplayer-qa.com/admin/orders/partialRefund/6D9FCCFA-EE225B-B1096"
+
+
+    
+    
+  }
+  
