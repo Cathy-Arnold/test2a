@@ -1,0 +1,51 @@
+{
+    "env": {
+        "db" : {
+            "userName": "TestingWhiz",
+            "password": "T3$t1nG",
+            "server": "stglsnr1.tcgplayer.local",
+            "options": {
+                "database": "TCGStoreStaging",
+                "encrypt": true,
+                "rowCollectionOnRequestCompletion": true,
+                "multisubnetfailover": true
+            }
+        },
+        "buyerInfo":{
+            "buyerEmail": "StoreFrontLogin@auto.com",
+            "bBuyerEmail1": "StoreFrontLogin1@auto.com",
+            "buyerEmail2": "StoreFrontLogin2@auto.com",
+            "buyerEmail3": "StoreFrontLogin3@auto.com",
+            "buyerEmail4": "StoreFrontLogin4@auto.com",
+            "buyerEmail5": "StoreFrontLogin5@auto.com",
+            "buyerEmail6": "StoreFrontLogin6@auto.com",
+            "buyerFirstName": "StoreFront",
+            "buyerLastName": "StoreFront"
+        },
+
+        "adminInfo": {
+            "adminEmail": "admin@auto.com"
+        },
+
+        "passwordInfo": {
+            "password": "P@ssw0rd!"
+            },
+
+        "sellerInfo": {
+            "sellerEmail": "customerservice@adventureson.com"
+        },
+
+        "URLInfo" : {
+            "UmbracoURL": "https://stage-tcgplayer.s1.umbraco.io/",
+            "adminURL": "store.tcgplayer-stg.com/admin"
+        },
+
+       
+      
+    "orderNumber": "F417072D-61071D-5622D",
+    "manageOrderPageURL": "https://store.tcgplayer-stg.com/admin/orders/manageorder/F417072D-61071D-5622D",
+    "partialRefundPageURL": "https://store.tcgplayer-stg.com/admin/orders/partialRefund/F417072D-61071D-5622D?sellerKey=F417072D"
+    
+    }   
+
+}

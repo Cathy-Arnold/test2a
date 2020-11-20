@@ -1,15 +1,13 @@
 {
+    "ignoreTestFiles": "**/examples/*",
+    "viewportHeight": 1080,
+    "viewportWidth": 1920,
+
+    "chromeWebSecurity": false,
+    "customErrors mode": "Off",
+
     "env": {
-    "db" : {
-        "userName": "TestingWhiz",
-        "password": "T3$t1nG",
-        "server": "qalsnr1.tcgplayer.local",
-        "options": {
-            "database": "TCGStoreQA",
-            "encrypt": true,
-            "rowCollectionOnRequestCompletion": true,
-            "multisubnetfailover": true
-        }
+        
     }
-}
+
 }

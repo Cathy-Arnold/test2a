@@ -1,0 +1,56 @@
+{
+    "env": {
+        "db" : {
+            "userName": "TestingWhiz",
+            "password": "T3$t1nG",
+            "server": "qalsnr1.tcgplayer.local",
+            "options": {
+                "database": "TCGStoreQA",
+                "encrypt": true,
+                "rowCollectionOnRequestCompletion": true,
+                "multisubnetfailover": true
+            }
+        },
+
+        "buyerInfo":{
+            "buyerEmail": "StoreFrontLogin@auto.com",
+            "bBuyerEmail1": "StoreFrontLogin1@auto.com",
+            "buyerEmail2": "StoreFrontLogin2@auto.com",
+            "buyerEmail3": "StoreFrontLogin3@auto.com",
+            "buyerEmail4": "StoreFrontLogin4@auto.com",
+            "buyerEmail5": "StoreFrontLogin5@auto.com",
+            "buyerEmail6": "StoreFrontLogin6@auto.com",
+            "buyerFirstName": "StoreFront",
+            "buyerLastName": "StoreFront"
+        },
+
+        "adminInfo": {
+            "adminEmail": "admin@auto.com"
+        },
+
+
+        "passwordInfo": {
+            "password": "P@ssw0rd!"
+            },
+
+        "sellerInfo": {
+            "sellerEmail": "powellab@gmail.com"
+        },
+
+        "URLInfo" : {
+            "UmbracoURL": "http://abpcards.umbracoqa.com/",
+            "adminURL": "store.tcgplayer-qa.com/admin"
+        }
+    },
+       
+   
+    "adminEmail": "admin@auto.com",
+   
+
+    "orderNumber": "6D9FCCFA-EE225B-B1096",
+    "manageOrderPageURL": "https://store.tcgplayer-qa.com/admin/orders/manageorder/6D9FCCFA-EE225B-B1096",
+    "partialRefundPageURL": "https://store.tcgplayer-qa.com/admin/orders/partialRefund/6D9FCCFA-EE225B-B1096"
+    
+}   
+
+
