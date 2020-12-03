@@ -1,13 +1,20 @@
 export class UmbracoShoppingCart {
 
-    setBuyerAuthCookie(buyer) {
-        cy.setCookie(Cypress.env("oauthCookieName"), Cypress.env(buyer), { httpOnly: true })
+    
+    setBuyerAuthCookie(buyerCookieName) {
+        cy.get('.shoppingCartHeader').then(($Loggedin) => {
+            const valueOauthCookieValue = 'oauthCookieValue'
+            cy.log(valueOauthCookieValue)
+            cy.setCookie(Cypress.env("oauthCookieName"), Cypress.env(valueOauthCookieValue+buyerCookieName), { httpOnly: true })
+        })
     }
+
+
     setBuyerRevalidationKeyCookie() {
         cy.setCookie('BuyerRevalidationKey', '', { httpOnly: true })   //set a blank cookie that expires 20 years into the future
     }
     visitUmbracoShoppingCartPage() {
-        cy.visit('https://cart.tcgplayer-stg.com/shoppingcart?sf=F417072D&ck=e9c04d655f034915907518e3a0a68f5f')
+        cy.visit('https://cart.tcgplayer-'+Cypress.env("env")+'.com/shoppingcart?sf='+cartKey+'&ck=e9c04d655f034915907518e3a0a68f5f')
     }
 
 
@@ -52,10 +59,15 @@ export class UmbracoShoppingCart {
         //   const itemQuantity = $itemQuantity.text().trim()
         //   expect(itemQuantity).to.eql('1')
         // })
-        cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
-            const inventoryQuantity = $inventoryQuantity.text().trim()
-            expect(inventoryQuantity).to.eql('of 22')
-        })
+        
+        
+        // //Remove until we can implement DB call to get inventory
+        // cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
+        //     const inventoryQuantity = $inventoryQuantity.text().trim()
+        //     expect(inventoryQuantity).to.eql('of 22')
+        // })
+
+
         cy.get('.update > .cartStyle > span').should('be.visible')    //Update
         cy.get('.remove').should('be.visible')   //remove
     }

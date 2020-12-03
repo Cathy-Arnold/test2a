@@ -1,0 +1,59 @@
+{
+    "env": {
+        "db": {
+            "userName": "TestingWhiz",
+            "password": "T3$t1nG",
+            "server": "stglsnr1.tcgplayer.local",
+            "options": {
+                "database": "TCGStoreStaging",
+                "encrypt": true,
+                "rowCollectionOnRequestCompletion": true,
+                "multisubnetfailover": true
+            }
+        },
+        "env": "stg",
+        "buyerEmail": "StoreFrontLogin@auto.com",
+        "bBuyerEmail1": "StoreFrontLogin1@auto.com",
+        "buyerEmail2": "StoreFrontLogin2@auto.com",
+        "buyerEmail3": "StoreFrontLogin3@auto.com",
+        "buyerEmail4": "StoreFrontLogin4@auto.com",
+        "buyerEmail5": "StoreFrontLogin5@auto.com",
+        "buyerEmail6": "StoreFrontLogin6@auto.com",
+        "buyerFirstName": "StoreFront",
+        "buyerLastName": "StoreFront",
+        "adminEmail": "admin@auto.com",
+        "sellerEmail": "customerservice@adventureson.com",
+        "password": "P@ssw0rd!",
+        "umbracoUrl": "https://stage-tcgplayer.s1.umbraco.io/",
+        "adminURL": "store.tcgplayer-stg.com/admin",
+        "sellerKey": "F417072D",
+        "orderNumber": "F417072D-61071D-5622D",
+        "manageOrderPageUrl": "https://store.tcgplayer-stg.com/admin/orders/manageorder/F417072D-BA52F5-1241F",
+        "partialRefundPageUrl": "https://store.tcgplayer-stg.com/admin/orders/partialRefund/F417072D-71CF80-80FFA?sellerKey=F417072D",
+        "partialRefundPageUrl1": "https://store.tcgplayer-stg.com/admin/orders/partialRefund/",
+        "partialRefundPageUrl2": "?sellerKey=F417072D",
+        "adminIndexPageUrl": "https://store.tcgplayer-stg.com/admin/Home/AdminIndex",
+        "oauthCookieValueAdmin":"CED3504FA47F642595E70D40E57B95AE57647CAFB0BAE21763C258679CEFF7D1474257C7289EB303F80CD9999338CA5CDD72DBEF5A4A3E6000BC33533AA597D75DE9CE07957866848F4E98F7EDC1FCC9E9F5F9BA6AE1D99B96F09E283AC90D6BE46F8387",
+        "oauthCookieValueSeller":"5A035FC1E931D82C9279DC97976054ADB30273759738E1DC850BA78C0DD1709E958F64BFC7C4274F7D64E5BA6AF8E2DA777FFA5A20F9AE5B6AC2B4A3C1CF833FD2654038A38947BD639E88DF26D6CBB201332EAC16B2C4B57DECFEFE5D9673005775747090EEE5B296B81A6FBE39EFB2B6AEF2E39DEF3477385C3BB76F54EB7DD667E743",
+        "oldoauthCookieValueBuyerEmail6":"13FF5EF9BEF491C427B5EF4452406F7B20A8DF24D98924B9185EA49554D4BE699757E77755BFB8376F964294645527DE616176122B63C5B88E8DDE65858A1815D78DD5C778DEA3027E773A7CD2936E214D11C16DF992EB9E242BE7337AA952F540AC391F7BE193E8A34C31B749DE725FCC5A4889",
+        "oauthCookieValueBuyerEmail6":"3016F43F1E003B1253FF793497CCBC801FF0C03E757CDDFDEA75ADDC5DA1B88333912E3A1D95F4AD5AC3C11EAE5B9A3C8241317F442A2178BBE004F1FA8EF2098661313BA3FBC7FDC6E196B344DD569780C3841C88CAA1C15C69A8E47018A14E078682A2617D2DB9E5A7C2501E403A6F053428E7",
+        "SavedoauthCookieValueBuyerEmail6":"8BEE1353DC3D504EB2BF17C226933CF267F0EADDFAC883BD159B9B8E4EC2031AE192354C50DD653F9963370749961728C0E403CF8E47E0556E8A3292B1E4330594A1F1195D70B697FDEF97E6CD9667960E98485870EF7648D4F89C7262D525E945B706009BE93E142A7581D1B514797C388258FD",
+        "TCGAuthTicket_AWSSTG" : "13FF5EF9BEF491C427B5EF4452406F7B20A8DF24D98924B9185EA49554D4BE699757E77755BFB8376F964294645527DE616176122B63C5B88E8DDE65858A1815D78DD5C778DEA3027E773A7CD2936E214D11C16DF992EB9E242BE7337AA952F540AC391F7BE193E8A34C31B749DE725FCC5A4889",
+        "oauthCookieName": "TCGAuthTicket_AWSSTG",
+        "bearerToken": "1nFiE4JunQ8ls_3bIHl_fmwc3E9EIu_uBcpHtNHyzHMv-HLyJEuStrTKlAdpSj0a2sjCC1u479ivvhg1QL9wJhSx4Q5cQy-dp4ox6bPaRRBsMVX_7M7-DuIa_fabucOXgokI2M2189bCxbqMLTLN0Ivi3DROhv2kAl66Wr62OWci8BcD0vsuwWIEZCXABiDC5PGtxw0NuS4D5cBP2Ip8xe5BDzvqdIbLM_kbnxO3YZU0zKNpIWOP-Q6WXjZt6gRLGbPzdrQ-_Dy0_2TmR3--gbGgKEzfA29LTrQ6id6B04i_Y9gH6B2xdS-C7h7zAWHC2TwxSWLeEAZyPE8zuxA_mA0xjUvypc1dtPmPbSmKR9eJlh-K",
+        "createCartUrl": "https://api.tcgplayer-stg.com/marketplace/shop/carts",
+        
+
+
+        "masterCardNumber": "5454545454545454",
+        "masterCardExpirationMonth": "12 December",
+        "masterCardExpirationYear": "2039",
+        "masterCardCvvCode": "123",
+
+
+
+        "partialRefundSkuId": "3238310"
+        
+      
+    }
+}

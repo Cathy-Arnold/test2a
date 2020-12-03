@@ -1,0 +1,36 @@
+{
+    "env": {
+        "db": {
+            "userName": "TestingWhiz",
+            "password": "T3$t1nG",
+            "server": "qalsnr1.tcgplayer.local",
+            "options": {
+                "database": "TCGStoreQA",
+                "encrypt": true,
+                "rowCollectionOnRequestCompletion": true,
+                "multisubnetfailover": true
+            }
+        },
+        "buyerEmail": "StoreFrontLogin@auto.com",
+        "bBuyerEmail1": "StoreFrontLogin1@auto.com",
+        "buyerEmail2": "StoreFrontLogin2@auto.com",
+        "buyerEmail3": "StoreFrontLogin3@auto.com",
+        "buyerEmail4": "StoreFrontLogin4@auto.com",
+        "buyerEmail5": "StoreFrontLogin5@auto.com",
+        "buyerEmail6": "StoreFrontLogin6@auto.com",
+        "buyerFirstName": "StoreFront",
+        "buyerLastName": "StoreFront",
+        "adminEmail": "admin@auto.com",
+        "sellerEmail": "powellab@gmail.com",
+        "password": "P@ssw0rd!",
+        "umbracoUrl": "http://abpcards.umbracoqa.com/",
+        "adminURL": "store.tcgplayer-qa.com/admin",
+        "orderNumber": "6D9FCCFA-EE225B-B1096",
+        "manageOrderPageUrl": "https://store.tcgplayer-qa.com/admin/orders/manageorder/6D9FCCFA-EE225B-B1096",
+        "partialRefundPageUrl": "https://store.tcgplayer-qa.com/admin/orders/partialRefund/6D9FCCFA-EE225B-B1096",
+        "adminIndexPageUrl": "https://store.tcgplayer-qa.com/admin/Home/AdminIndex",
+        "oauthCookieValueAdmin":"DE4FA8D66D046F9AAE533B13321335BD33CB0450788682604367F7B7083D6162BB2537870DECFC44BE3FC02B28AF99C5E11A6D3B26037690444819C500B8E5AE058124C597FA9DFC973BEBBD6EB3197DD2143098C971259D05EB4FE2B26E67B37417F22D",
+        "oauthCookieValueSeller":"8CD2B2E1A2E306B1DD4A3E17BBDDB972BF546ECCE3F2FA809B6F40F37207B4042593F00985CF732870B96BEA42205A4C3C1C089E1AB7CB038F642F104F111E84BF3B48E4BC2617B22576CDF6BDB901A54FB2010543249E0A701B0D05A4F2BDE2B5CC4743",
+        "oauthCookieName": "TCGAuthTicket_AWSQA"
+    }
+}

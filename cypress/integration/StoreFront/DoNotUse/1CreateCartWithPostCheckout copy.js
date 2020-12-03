@@ -30,10 +30,22 @@ describe('Create a cart using a Post statement and checkout', () => {
       //cy.writeFile('cypress/fixtures/cartKey.json', response.body.results[0].cartKey)
           
       
-      cy.writeFile('cypress/fixtures/cartKey.json', response.body.results[0])
-      const cartKey = cy.readFile('cypress/fixtures/cartKey.json').its('cartKey').should('eq',"6573d4d1289743178d251d1a530a56af")
+      // cy.writeFile('cypress/fixtures/cartKey.json', response.body.results[0])
+      // const cartKey = cy.readFile('cypress/fixtures/cartKey.json').its('cartKey').should('eq',"6573d4d1289743178d251d1a530a56af")
+      // cy.log(cartKey)
+
+      // const cartKey = response.body.response.find(cartKey => {
+      //   cy.wrap(cartKey).as(cartKey)
+      //   cy.visit('https://cart.tcgplayer-stg.com/shoppingcart?sf=F417072D&ck='+@cartKey)
+      // })
+
+
+      const cartKey = (response.body.results[0].cartKey)
+      //cy.wrap(cartKey).as('cartKey')
       cy.log(cartKey)
       cy.visit('https://cart.tcgplayer-stg.com/shoppingcart?sf=F417072D&ck='+cartKey)
+
+      //cy.visit('https://cart.tcgplayer-stg.com/shoppingcart?sf=F417072D&ck='+cartKey)
     })
 
     
