@@ -19,7 +19,7 @@
         "password": "P@ssw0rd!",
         "umbracoUrl": "https://stage-tcgplayer.s1.umbraco.io/",
         "adminURL": "store.tcgplayer-stg.com/admin",
-        "sellerEmail": "customerservice@adventureson.com",
+      
         "sellerKey": "F417072D",
         "sellerId": "8",
         "orderNumber": "F417072D-61071D-5622D",
