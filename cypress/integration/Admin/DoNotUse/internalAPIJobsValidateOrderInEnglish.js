@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { admin } from "../../support/page_objects/admin/adminFunctions"
+import { admin } from "../../../support/page_objects/admin/adminFunctions"
 
 
 

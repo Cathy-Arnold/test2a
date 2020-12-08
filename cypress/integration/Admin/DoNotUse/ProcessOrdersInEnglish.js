@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import { extendWith } from "cypress/types/lodash"
-import { admin } from "../../support/page_objects/admin/adminFunctions"
+import { admin } from "../../../support/page_objects/admin/adminFunctions"
 
 
 
