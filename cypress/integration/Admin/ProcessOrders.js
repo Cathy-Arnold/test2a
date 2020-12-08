@@ -2,7 +2,7 @@
 
 
 import { admin } from "../../support/page_objects/admin/adminFunctions"
-import { validateOrders } from "../../support/page_objects/admin/internalAPIValidateOrders"
+import { validateOrders1 } from "../../support/page_objects/admin/internalAPIValidateOrders1"
 
 
 
@@ -51,7 +51,7 @@ describe('Process Orders', () => {
 
 
         //     //run the 3 jobs here
-        validateOrders.runValidateOrders()
+        validateOrders1.runValidateOrders1()
         // } else if div[@id="runningJobs"]/table exists {
         // cy.log('An API job is running')  
         // //run the 3 jobs here

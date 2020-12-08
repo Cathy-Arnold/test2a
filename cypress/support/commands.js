@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import 'cypress-iframe';
+import 'cypress-wait-until';
 
 
 Cypress.Commands.add("adminLogin", (email, password) => {

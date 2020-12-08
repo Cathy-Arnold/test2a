@@ -14,6 +14,7 @@
     "cypress": "^5.4.0",
     "cypress-iframe": "^1.0.1",
     "cypress-sql-server": "^1.0.0",
+    "cypress-wait-until": "^1.7.1",
     "cypress-xpath": "^1.6.0"
   },
   "dependencies": {
