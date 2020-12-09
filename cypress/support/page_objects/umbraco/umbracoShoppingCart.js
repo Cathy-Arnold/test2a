@@ -74,51 +74,51 @@ export class UmbracoShoppingCart {
 
     verifyOrderSummary() {
         //Order Summary
-        cy.get('#sellerSummary_8 > h2').should('be.visible')    //Order Summary text
+        cy.get('#sellerSummary_'+Cypress.env("sellerId")+' > h2').should('be.visible')    //Order Summary text
         cy.get(':nth-child(4) > tbody > tr > .leftCol').should('be.visible')   //Number of Items text
-        cy.get('#sellerSummaryItemCount_8').then(($actualNumberOfItems) => {      //Actual Number of Items
+        cy.get('#sellerSummaryItemCount_'+Cypress.env("sellerId")).then(($actualNumberOfItems) => {      //Actual Number of Items
             const actualNumberOfItems = $actualNumberOfItems.text()
             expect(actualNumberOfItems).to.eql('1')
         })
         cy.get(':nth-child(6) > tbody > tr > .leftCol > span').should('be.visible')  //Items text
 
-        cy.get('#sellerSummaryItemTotal_8').then(($itemsDollarTotal) => {     // Items Dollar Total
+        cy.get('#sellerSummaryItemTotal_'+Cypress.env("sellerId")).then(($itemsDollarTotal) => {     // Items Dollar Total
             const itemsDollarTotal = $itemsDollarTotal.text()
             expect(itemsDollarTotal).to.eql('$5.26')
         })
 
-        cy.get('#sellerSummary_8 > :nth-child(7) > tbody > :nth-child(1) > td').should('be.visible')   //Shipping Options text
-        cy.get('#shippingColumn_8_234440 > .shippingText').should('be.visible')   //Free Shipping text
+        cy.get('#sellerSummary_'+Cypress.env("sellerId")+' > :nth-child(7) > tbody > :nth-child(1) > td').should('be.visible')   //Shipping Options text
+        cy.get('#shippingColumn_'+Cypress.env("sellerId")+'_234440 > .shippingText').should('be.visible')   //Free Shipping text
 
 
 
 
-        cy.get('#shippingOptionCost_8_234440 > span').then(($freeShippingAmount) => {      //Free Shipping amount
+        cy.get('#shippingOptionCost_'+Cypress.env("sellerId")+'_234440 > span').then(($freeShippingAmount) => {      //Free Shipping amount
             const freeShippingAmount = $freeShippingAmount.text()
             expect(freeShippingAmount).to.eql('$0.00')
         })
 
-        cy.get('#shippingColumn_8_23801 > .shippingText').should('be.visible')  //Expedited Shipping text
+        cy.get('#shippingColumn_'+Cypress.env("sellerId")+'_23801 > .shippingText').should('be.visible')  //Expedited Shipping text
 
 
-        cy.get('#shippingOptionCost_8_23801 > span').then(($expeditedShippingAmount) => {       //Expedited Shipping amount
+        cy.get('#shippingOptionCost_'+Cypress.env("sellerId")+'_23801 > span').then(($expeditedShippingAmount) => {       //Expedited Shipping amount
             const expeditedShippingAmount = $expeditedShippingAmount.text()
             expect(expeditedShippingAmount).to.eql('$6.99')
         })
 
-        cy.get('#shippingColumn_8_194525 > .shippingText').should('be.visible')   //In-Store Pickup text
+        cy.get('#shippingColumn_'+Cypress.env("sellerId")+'_194525 > .shippingText').should('be.visible')   //In-Store Pickup text
 
 
-        cy.get('#shippingOptionCost_8_194525').then(($inStorePickupAmount) => {      //In-Store Pickup amount
+        cy.get('#shippingOptionCost_'+Cypress.env("sellerId")+'_194525').then(($inStorePickupAmount) => {      //In-Store Pickup amount
             const inStorePickupAmount = $inStorePickupAmount.text()
             expect(inStorePickupAmount).to.eql('$0.00')
         })
         cy.get('.right').should('be.visible')  //Your Order qualifies for free shipping text
-        cy.get(' #sellerSummary_8 > .subtotal > tbody > tr > :nth-child(1)').should('be.visible')   //Subtotal text
+        cy.get(' #sellerSummary_'+Cypress.env("sellerId")+' > .subtotal > tbody > tr > :nth-child(1)').should('be.visible')   //Subtotal text
 
 
 
-        cy.get(' #sellerSubtotal_8').then(($subtotalAmount) => {     //Subtotal amount
+        cy.get(' #sellerSubtotal_'+Cypress.env("sellerId")).then(($subtotalAmount) => {     //Subtotal amount
             const subtotalAmount = $subtotalAmount.text()
             expect(subtotalAmount).to.eql('$5.26')
         })
