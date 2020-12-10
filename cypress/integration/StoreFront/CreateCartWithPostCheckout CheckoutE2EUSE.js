@@ -5,8 +5,8 @@ import { createCart } from "../../support/page_objects/umbraco/createCart"
 import { shoppingCartReviewPage } from "../../support/page_objects/umbraco/checkout"
 import { umbracoShoppingCart } from "../../support/page_objects/umbraco/umbracoShoppingCart"
 
-import { PartialRefundPage, VerifyPartialRefundItems } from "../../support/page_objects/admin/partialRefund"
-import { VerifyPartialRefund } from "../../support/page_objects/admin/partialRefund"
+import { PartialRefundPage, VerifyPartialRefundItems } from "../../support/page_objects/admin/orders/partialRefund"
+import { VerifyPartialRefund } from "../../support/page_objects/admin/orders/partialRefund"
 import { admin } from "../../support/page_objects/admin/adminFunctions"
 
 
@@ -21,7 +21,7 @@ describe('Create a cart using a Post statement', () => {
   it('Create a cart using a Post Statment, Checkout, Partial Refund', () => {
     createCart.createCartVistShoppingCartPage(buyerData.buyerEmail6)
     umbracoShoppingCart.setBuyerAuthCookie(buyerCookieName)
-    cy.setCookie('InContext_' + Cypress.env("sellerKey") + '_AWS' + Cypress.env("envUpper"), 'SellerId=8&SellerKey=' + Cypress.env("sellerKey") + '&StoreName=adventuresON&StreetAddress=6026+Fair+Oaks+Blvd&City=Carmichael&StateProvince=CA&PostalCode=95608&EmailAddress=customerservice%40adventuresON.com&PhoneNumber=(916)+973-9064&StorefrontUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2f&CartKey=+cartKey+&LogoImageUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2fmedia%2f1021%2fdefault-logo.png&IsPayNowEnabled=True&IsPayLaterEnabled=True&ChannelId=1', { httpOnly: true })
+    cy.setCookie('InContext_'+Cypress.env("sellerKey")+'_AWS' + Cypress.env("envUpper"), 'SellerId='+Cypress.env("sellerId")+'&SellerKey='+Cypress.env("sellerKey")+'&StoreName=adventuresON&StreetAddress=6026+Fair+Oaks+Blvd&City=Carmichael&StateProvince=CA&PostalCode=95608&EmailAddress=customerservice%40adventuresON.com&PhoneNumber=(916)+973-9064&StorefrontUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2f&CartKey=+cartKey+&LogoImageUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2fmedia%2f1021%2fdefault-logo.png&IsPayNowEnabled=True&IsPayLaterEnabled=True&ChannelId=1', { httpOnly: true })
     
     //Shopping Cart Page
     umbracoShoppingCart.verifyPackageDetails()

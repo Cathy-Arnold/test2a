@@ -3,7 +3,7 @@
 describe('Product Page', () => {
 
     it('Open Umbraco', () => {
-      cy.visit('http://abpcards.umbracoqa.com/catalog/magic/theros/thoughtseize')
+      cy.visit(Cypress.env("umbracoUrl")+'/catalog/magic/theros/thoughtseize')
       })
  
     

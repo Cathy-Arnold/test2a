@@ -14,7 +14,7 @@ export class adminFunctions {
     headlessLoginAdminSite(userName, password)  {
         cy.request({
             method: 'POST',
-            url: 'https://store.tcgplayer-stg.com/admin/Account/LogOn', 
+            url: 'https://store.tcgplayer-'+Cypress.env("env")+'.com/admin/Account/LogOn', 
             form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
             body: {
               userName: userName,
