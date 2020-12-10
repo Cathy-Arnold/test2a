@@ -20,7 +20,7 @@ describe('Process Orders', () => {
 
     it('Process Orders', () => {
         admin.headlessLoginAdminSite(adminData.adminEmail, passwordData.password)
-        cy.visit('https://store.tcgplayer-stg.com/admin/InternalApi/StartJob')
+        cy.visit('https://store.tcgplayer-'+(Cypress.env("env"))+'.com/admin/InternalApi/StartJob')
         admin.verifyAdminLogin()
         cy.get('.formRow')
         cy.wait(10000)
