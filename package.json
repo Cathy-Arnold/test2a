@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:run_qa": "npx cypress open --env configFile=qa",
+    "cypress:run_staging": "npx cypress open --env configFile=staging"
   },
   "author": "Arnold",
   "license": "ISC",
   "devDependencies": {
     "cypress": "^5.4.0",
+    "cypress-iframe": "^1.0.1",
     "cypress-sql-server": "^1.0.0",
+    "cypress-wait-until": "^1.7.1",
     "cypress-xpath": "^1.6.0"
   },
   "dependencies": {

@@ -1,0 +1,46 @@
+{
+    "env": {
+        "db": {
+            "userName": "TestingWhiz",
+            "password": "T3$t1nG",
+            "server": "qalsnr1.tcgplayer.local",
+            "options": {
+                "database": "TCGStoreQA",
+                "encrypt": true,
+                "rowCollectionOnRequestCompletion": true,
+                "multisubnetfailover": true
+            }
+        },
+        "env": "qa",
+        
+        "adminEmail": "admin@auto.com",
+        "sellerEmail": "powellab@gmail.com",
+        "password": "P@ssw0rd!",
+        "umbracoUrl": "http://abpcards.umbracoqa.com/",
+        "adminURL": "store.tcgplayer-qa.com/admin",
+        "sellerEmail": "powellab@gmail.com",
+        "sellerKey": "6d9fccfa",
+        "orderNumber": "6D9FCCFA-EE225B-B1096",
+        "manageOrderPageUrl": "https://store.tcgplayer-qa.com/admin/orders/manageorder/6D9FCCFA-EE225B-B1096",
+        "partialRefundPageUrl": "https://store.tcgplayer-qa.com/admin/orders/partialRefund/6D9FCCFA-EE225B-B1096?sellerKey=6d9fccfa",
+        "partialRefundPageUrl1": "https://store.tcgplayer-qa.com/admin/orders/partialRefund/",
+        "partialRefundPageUrl2": "?sellerKey=6d9fccfa",
+        "adminIndexPageUrl": "https://store.tcgplayer-qa.com/admin/Home/AdminIndex",
+        "oauthCookieValueAdmin":"DE4FA8D66D046F9AAE533B13321335BD33CB0450788682604367F7B7083D6162BB2537870DECFC44BE3FC02B28AF99C5E11A6D3B26037690444819C500B8E5AE058124C597FA9DFC973BEBBD6EB3197DD2143098C971259D05EB4FE2B26E67B37417F22D",
+        "oauthCookieValueSeller":"8CD2B2E1A2E306B1DD4A3E17BBDDB972BF546ECCE3F2FA809B6F40F37207B4042593F00985CF732870B96BEA42205A4C3C1C089E1AB7CB038F642F104F111E84BF3B48E4BC2617B22576CDF6BDB901A54FB2010543249E0A701B0D05A4F2BDE2B5CC4743",
+             
+        "oauthCookieValueBuyerEmail6":"5DA71CA2E6AB6ED27CAA1F5922D411935A47345F02FD9FD9070EEE659F97454F830C127C706742125039A79E0CC8ABBA809368D0AC8F98088DC63618D21054D268E18335EB3FE17C517258CFE9E92B48382ACF884DD231BB1BD94936B83E9F1D565D51BBA777ED2785BC3189F6119B7D90DFC4AD",
+        "SavedoauthCookieValueBuyerEmail6":"8BEE1353DC3D504EB2BF17C226933CF267F0EADDFAC883BD159B9B8E4EC2031AE192354C50DD653F9963370749961728C0E403CF8E47E0556E8A3292B1E4330594A1F1195D70B697FDEF97E6CD9667960E98485870EF7648D4F89C7262D525E945B706009BE93E142A7581D1B514797C388258FD",
+        "TCGAuthTicket_AWSSTG" : "13FF5EF9BEF491C427B5EF4452406F7B20A8DF24D98924B9185EA49554D4BE699757E77755BFB8376F964294645527DE616176122B63C5B88E8DDE65858A1815D78DD5C778DEA3027E773A7CD2936E214D11C16DF992EB9E242BE7337AA952F540AC391F7BE193E8A34C31B749DE725FCC5A4889",
+        "oauthCookieName": "TCGAuthTicket_AWSQA",
+        "bearerToken": "DFdZN1Wrsl2chM4JFrUCxP3HhLV4AHuYaMOszPpbDq1bMwMhZvCgfB2S-Z0ZuRlAFNnTiuvydmAXXE5wAUCFfzkmraFw3RcgkGvGe9sCs5QqQO52_kLqpfKPaWGefI57t8JFoTUsejU1z-aBMRX9L9za-krc1qmiacgVorkSYh8yLDfNx11iKh3EAk1PiITqkyreiBjPTAqv0tUq9gEZM6a9iYOpcT5w0Tl9J-h3q1TmF2xxol1DsDCtR5vbh52B6iQK2F6QZDfgxmaFYFNtAaoglxPjgYTp1lQm4ifasHdyVRx92Syrpu5q3mKs3yCme6xKP0Xot1JuuT4_GkhS66gRe7GY38Bhz0c-WYl4Rjp4-DLO",
+        "createCartUrl": "https://api.tcgplayer-qa.com/marketplace/shop/carts",
+
+
+
+
+        "partialRefundSkuId": "3238310"
+        
+      
+    }
+}

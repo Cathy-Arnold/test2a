@@ -1,6 +1,9 @@
 {
+
+
+
     "env": {
-    "db" : {
+        "db" : {
         "userName": "TestingWhiz",
         "password": "T3$t1nG",
         "server": "qalsnr1.tcgplayer.local",
@@ -9,7 +12,22 @@
             "encrypt": true,
             "rowCollectionOnRequestCompletion": true,
             "multisubnetfailover": true
+            }
         }
-    }
-}
+
+    },
+
+
+    
+    "ignoreTestFiles": "**/examples/*",
+    "viewportHeight": 1080,
+    "viewportWidth": 1920,
+
+    "chromeWebSecurity": false,
+    "customErrors mode": "Off",
+    "experimentalSourceRewriting": true
+
+    
+
+
 }
