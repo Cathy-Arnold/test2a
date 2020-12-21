@@ -6,9 +6,9 @@
         "db" : {
         "userName": "TestingWhiz",
         "password": "T3$t1nG",
-        "server": "qa-db-2.tcgplayer.local",     
+        "server": "stglsnr1.tcgplayer.local",     
         "options": {
-            "database": "TCGStoreQA",
+            "database": "TCGStoreStaging",
             "encrypt": true,
             "rowCollectionOnRequestCompletion": true,
             "multisubnetfailover": true

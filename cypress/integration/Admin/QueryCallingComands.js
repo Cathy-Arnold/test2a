@@ -3,8 +3,7 @@
 
 import { databaseQueryFunctions } from "../../support/page_objects/database/databaseQueryFunctions"
 
-//const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = ' + Cypress.env("sellerId")"
-const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = 62"
+const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = " + Cypress.env("sellerId")
 const sellerProServicesSettingsFile = "cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json"
 
 
