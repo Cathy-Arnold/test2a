@@ -20,7 +20,7 @@ export class UmbracoShoppingCart {
 
 
     //Shopping Cart
-    verifyPackageDetails(productName, categoryName, rarity, conditionName) {
+    verifyPackageDetails() {
         //Shopping Cart Header
         cy.get('.shoppingCartHeader').should('be.visible')
 
@@ -37,19 +37,19 @@ export class UmbracoShoppingCart {
         cy.get('.lazy').should('be.visible')   //thumbnail
         cy.get('h3 > .cartStyle').then(($cardName) => {  //Card Name
             const cardName = $cardName.text()
-            expect(cardName).to.eql(productName)
+            expect(cardName).to.eql('Blooming Marsh')
         })
         cy.get('.itemsContents > p').then(($setCategoryName) => {      //Set and category name
             const setCategoryName = $setCategoryName.text()
-            expect(setCategoryName).to.eql(categoryName)
+            expect(setCategoryName).to.eql('Kaladesh - Magic')
         })
         cy.get('.detailsContents > :nth-child(1)').then(($rarity) => {      //rarity
             const rarity = $rarity.text()
-            expect(rarity).to.eql(rarity)
+            expect(rarity).to.eql('Rarity: R')
         })
         cy.get('.detailsContents > :nth-child(2)').then(($condition) => {      //Condition
             const condition = $condition.text().trim()
-            expect(condition).to.eql(conditionName)
+            expect(condition).to.eql('Condition: Near Mint - Spanish')
         })
         cy.get('.priceContents').then(($itemPrice) => {      //price of item
             const itemPrice = $itemPrice.text().trim()

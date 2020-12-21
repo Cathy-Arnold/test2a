@@ -13,11 +13,16 @@
 // the project's config changing)
 
 
+/**
+ * @type {Cypress.PluginConfig}
+ */
 
-//add per class for environmental variable
+const sqlServer = require('cypress-sql-server');
+//const dbConfig = require('/Users/trishabatchoo/Repos/cypress-experimental/cypress.json');
+const dbConfig = require("C:/Users/Work HP PC/Documents/Repositories/WorkingFolder/QE_Core_Automation/cypress.json");
+                       
 const fs = require('fs-extra')
 const path = require('path')
-
 function getConfigurationByFile (file) {
   const pathToConfigFile = path.resolve('cypress', 'config', `${file}.json`)
   if(!fs.existsSync(pathToConfigFile)){
@@ -25,29 +30,13 @@ function getConfigurationByFile (file) {
   }
   return fs.readJson(pathToConfigFile)
 }
-//end of add per class for environmental variable
 
-
-/**
- * @type {Cypress.PluginConfig}
- */
-
-
-
-
-
-// const sqlServer = require('cypress-sql-server')
-// const dbConfig = require('C:/Users/Work HP PC/Cypress/cypress.json')
-// module.exports = (on, config) => {
-//   tasks = sqlServer.loadDBPlugin(config.env.db)
-//   on('task', tasks)
-//   return tasks
-// }
-
-  //add per class for environmental variable
-  module.exports = (on, config) => {
-  const file = config.env.configFile
-  return getConfigurationByFile(file)
-  //end of add per class for environmental variable
+module.exports = (on, config) => {
+  tasks = sqlServer.loadDBPlugin(config.env.db);
+  const file = config.env.configFile;
+  
+  on('task', tasks);
+  
+  
+  return tasks, getConfigurationByFile(file)
 }
-

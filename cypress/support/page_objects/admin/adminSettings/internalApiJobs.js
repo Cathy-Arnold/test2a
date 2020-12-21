@@ -15,6 +15,20 @@ export class internalApiJobs {
     }
 
 
+    runApiJobn(jobName, runningJobName) {
+        cy.server()
+        cy.request({
+            method: 'POST',
+            url: 'http://services.tcgplayer-'+Cypress.env("env")+'.com/internalapi'+Cypress.env("envUpper")+'/job/start?jn=' + jobName + '&u=1'
+        })
+        const isJobRunning = true
+        cy.log(isJobRunning)
+        cy.wait(5000)  //page refreshes every 5 seconds
+        //Wait until job is complete
+        cy.get('tbody > tr > :nth-child(1)').contains(runningJobName, { timeout: 180000 }).should('not.exist')   //Will look for up to 3 minutes
+    }
+
+
 
     runSendOrders() {
         cy.server()

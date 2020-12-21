@@ -6,7 +6,7 @@
         "db" : {
         "userName": "TestingWhiz",
         "password": "T3$t1nG",
-        "server": "qalsnr1.tcgplayer.local",
+        "server": "qa-db-2.tcgplayer.local",     
         "options": {
             "database": "TCGStoreQA",
             "encrypt": true,

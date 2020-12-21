@@ -8,7 +8,7 @@ describe('DataBase Testing' , () => {
 
 
 
-        cy.sqlServer('select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = '+Cypress.env("sellerId")).then((response) => {
+        cy.sqlServer('select SellerId as sellerId,StoreName as storeName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = '+Cypress.env("sellerId")).then((response) => {
             // const sellerId = (response[0])
             // const storeName = (response[1]) 
             // const streetAddress = (response[2])
@@ -23,11 +23,13 @@ describe('DataBase Testing' , () => {
             // cy.log(zip)
             
            
-             cy.writeFile('cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json', response)
-            // //const stateFile = (response[4])
+            // cy.writeFile('cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json', response)
+            // const stateFile = (response[4])
             // cy.log(stateFile)
 
-          
+            cy.writeFile('cypress/fixtures/filesDuringTestRun/SellerProServicesSettingsExcel.xlsx', response)
+            const stateFileX = (response[4])
+            cy.log(stateFileX)
         
             cy.readFile('cypress/fixtures//filesDuringTestRun/readFile.json').then((readFile) => {
             const stateReadFile = (readFile[4])

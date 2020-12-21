@@ -1,6 +1,6 @@
 export class CreateCart {
 
-    createCartVistShoppingCartPage(buyer) {
+    createCartVistShoppingCartPage(buyer,product) {
         cy.server()
         cy.request({
             method: 'POST',
@@ -9,10 +9,11 @@ export class CreateCart {
             //body: 'fixture:createCartPartialRefund.json'   //does not work like it does in section 5 lesson 27 ts: 3:33
             body:
             {
-                "skuId": (Cypress.env("partialRefundSkuId")),
+               // "skuId": (Cypress.env("partialRefundSkuId")),
+               "skuId": (product),
                 "quantity": 1,
                 "channelId": 1,
-                "user": Cypress.env(buyer)
+                "user": (buyer)
             }
         }).then(response => {
             expect(response.status).to.equal(200)
