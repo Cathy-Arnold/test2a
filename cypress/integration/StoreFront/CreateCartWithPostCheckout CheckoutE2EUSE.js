@@ -25,7 +25,7 @@ describe('Create a cart using a Post statement', () => {
     
     //Get Product Info
 
-    //const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp INNER JOIN dbo.seller s on sp.sellerid = s.SellerId INNER JOIN PDT.ProductCondition pc on PC.ProductConditionId = sp.StoreProductConditionID INNER JOIN PDT.Product p on p.ProductId = PC.ProductId where s.sellerid = "+Cypress.env("sellerId")+" and sp.StoreProductConditionId = "+productData.partialRefundSkuId+ "and sp.ChannelId = 1"
+    // const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp INNER JOIN dbo.seller s on sp.sellerid = s.SellerId INNER JOIN PDT.ProductCondition pc on PC.ProductConditionId = sp.StoreProductConditionID INNER JOIN PDT.Product p on p.ProductId = PC.ProductId where s.sellerid = "+Cypress.env("sellerId")+" and sp.StoreProductConditionId = "+productData.partialRefundSkuId+ "and sp.ChannelId = 1"
     
     // const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp " 
     // + "INNER JOIN dbo.seller s on sp.sellerid = s.SellerId " 
@@ -35,45 +35,119 @@ describe('Create a cart using a Post statement', () => {
     // + "and sp.StoreProductConditionId = "+productData.partialRefundSkuId
     // + "and sp.ChannelId = 1"
 
+    ////Enable IsPayNowEnabled
+    // cy.sqlServer("UPDATE dbo.SellerProServicesSettings SET IsPayNowEnabled = 1 where SellerId = "+Cypress.env("sellerId"))
+    
 
-    cy.sqlServer("UPDATE dbo.SellerProServicesSettings SET IsPayNowEnabled = 1 where SellerId = "+Cypress.env("sellerId"))
-    //cy.sqlServer("UPDATE dbo.Seller set DailyRefundCount = 0 where SellerId = "+Cypress.env("sellerId"))
+    ////Set daily refund count to zero
+    // cy.sqlServer("UPDATE dbo.Seller set DailyRefundCount = 0 where SellerId = "+Cypress.env("sellerId"))
 
 
-
+    ////Set expedited shipping amount
     // cy.sqlServer("DECLARE @SellerId BIGINT "
     // + "SELECT @SellerId = "+Cypress.env("sellerId") 
     // + "IF EXISTS (select top 1 * from dbo.ShippingSellerPrice where ShippingMethodId  = 2 and ShippingCategoryId = 1 and SellerId = @SellerId) "
     // + "BEGIN "
-    // + "UPDATE dbo.ShippingSellerPrice SET Price = "+Cypress.env("expeditedShipping")"+ , UpdatedAt = getutcdate(), UpdatedByUserID = (select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'), IsActive = 1, IsOverThreshold = 0, IsInviteOnly = 0, Threshold = Null WHERE ShippingSellerPriceId = (select ShippingSellerPriceId from dbo.ShippingSellerPrice where ShippingMethodId  = 2 and ShippingCategoryId = 1 and SellerId = @SellerId) "
+    // + "UPDATE dbo.ShippingSellerPrice SET Price = "+Cypress.env("expeditedShipping")+", UpdatedAt = getutcdate(), UpdatedByUserID = (select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'), IsActive = 1, IsOverThreshold = 0, IsInviteOnly = 0, Threshold = Null WHERE ShippingSellerPriceId = (select ShippingSellerPriceId from dbo.ShippingSellerPrice where ShippingMethodId  = 2 and ShippingCategoryId = 1 and SellerId = @SellerId) "
     // + "END     "              
     // + "ELSE BEGIN "
     // + "INSERT INTO dbo.ShippingSellerPrice (ShippingCategoryId, ShippingMethodId, SellerId, CountryCode, Price, ShippingMethodCode, CreatedAt, UpdatedAt, CreatedByUserId, UpdatedByUserId, IsActive, IsOverThreshold, IsInviteOnly, Threshold) "
-    // + "    SELECT ShippingCategoryId,	2,	@SellerId,	'US',	"+Cypress.env("expeditedShipping")"+ ,	'TCGFIRSTCLASS',	getutcdate(),	getutcdate(),	(select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'),	NULL,	1,	0,	0,	NULL FROM ShippingCategory "
+    // + "    SELECT ShippingCategoryId,	2,	@SellerId,	'US',	"+Cypress.env("expeditedShipping")+",	'TCGFIRSTCLASS',	getutcdate(),	getutcdate(),	(select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'),	NULL,	1,	0,	0,	NULL FROM ShippingCategory "
     // + "END") 
+  
+    //Get expedited ShippingSellerPriceId 
+    // cy.sqlServer("Select ssp.ShippingSellerPriceId "
+    //   + "from dbo.ShippingSellerPrice ssp " 
+    //   + "Inner Join dbo.Shippingmethod sm  ON sm.ShippingMethodId = ssp.ShippingMethodId " 
+    //   + "where ssp.ShippingMethodId = 2 " //Expedited 
+    //   + "and ssp.ShippingCategoryId = 1 "
+    //   + "and SellerId = "+Cypress.env("sellerId")
+    //   + " and IsActive = 1")
 
+      ////Update inventory for Channel 0
+      // cy.sqlServer("DECLARE @SellerId BIGINT "
+      //   + "DECLARE @ProductConditionId BIGINT "
+      //   + "DECLARE @Quantity INT "
+      //   + "DECLARE @Price DECIMAL(8,2) "
+      //   + "DECLARE @MaxFulfillableQty TINYINT "
+      //   + "DECLARE @ChannelId SMALLINT "
+      //   + "SELECT @SellerId = "+Cypress.env("sellerId")+", @ProductConditionId = "+productData.partialRefundSkuId+", @Quantity = "+productData.quantity+", @Price = '"+productData.price+"' , @ChannelId = 0 "
+      // + "IF EXISTS(SELECT 1 FROM dbo.StorePrice WHERE SellerId = @SellerId AND StoreProductConditionId = @ProductConditionId AND ChannelId = @ChannelId) "
+      // + "BEGIN "
+      // + "UPDATE dbo.StorePrice SET Price = @Price, Quantity = @Quantity WHERE SellerId = @SellerId And StoreProductConditionId = @ProductConditionId And ChannelId = @ChannelId "
+      // + "END     "              
+      // + "ELSE BEGIN "
+      // + "INSERT INTO dbo.StorePrice(StoreProductConditionId, StoreProductId, StoreConditionId, SellerId, Quantity, Price, LastUpdated, MaxQty, ChannelId, ReserveQuantity) "
+      // + "SELECT ProductConditionId, ProductId, ConditionId, @SellerId, @Quantity, @Price, getutcdate(),  0, @ChannelId, 0 "
+      // + "FROM PDT.ProductCondition "
+      // + "WHERE ProductConditionId = @ProductConditionId "
+      // + "END")
+
+      ////Update inventory for Channel 1
+      //   cy.sqlServer("DECLARE @SellerId BIGINT "
+      //   + "DECLARE @ProductConditionId BIGINT "
+      //   + "DECLARE @Quantity INT "
+      //   + "DECLARE @Price DECIMAL(8,2) "
+      //   + "DECLARE @MaxFulfillableQty TINYINT "
+      //   + "DECLARE @ChannelId SMALLINT "
+      //   + "SELECT @SellerId = "+Cypress.env("sellerId")+", @ProductConditionId = "+productData.partialRefundSkuId+", @Quantity = "+productData.quantity+", @Price = '"+productData.price+"' , @ChannelId = 1 "
+      // + "IF EXISTS(SELECT 1 FROM dbo.StorePrice WHERE SellerId = @SellerId AND StoreProductConditionId = @ProductConditionId AND ChannelId = @ChannelId) "
+      // + "BEGIN "
+      // + "UPDATE dbo.StorePrice SET Price = @Price, Quantity = @Quantity WHERE SellerId = @SellerId And StoreProductConditionId = @ProductConditionId And ChannelId = @ChannelId "
+      // + "END     "              
+      // + "ELSE BEGIN "
+      // + "INSERT INTO dbo.StorePrice(StoreProductConditionId, StoreProductId, StoreConditionId, SellerId, Quantity, Price, LastUpdated, MaxQty, ChannelId, ReserveQuantity) "
+      // + "SELECT ProductConditionId, ProductId, ConditionId, @SellerId, @Quantity, @Price, getutcdate(),  0, @ChannelId, 0 "
+      // + "FROM PDT.ProductCondition "
+      // + "WHERE ProductConditionId = @ProductConditionId "
+      // + "END")
+
+
+     //// Calculate ProductTotalPrice
+     cy.sqlServer("select cast((Round((SELECT "+productData.purchasedQuantity+" * "+productData.price+"), 2, 0)) as decimal(10,2))")
+      
+      ////Calculate RefundProductAmount
+      cy.sqlServer("select cast((Round((SELECT ${ProductTotalPrice} / 2 ), 2, 0)) as decimal(10,2))")
+      
+      
+      ////Calculate RefundShippingAmount
+      cy.sqlServer("select cast((Round((SELECT "+Cypress.env("expeditedShipping")+" / 2 ), 2, 0)) as decimal(10,2))")
+      
+      ////Calculate RefundAmountRequested
+      cy.sqlServer("select cast((Round((SELECT ${RefundProductAmount} + ${RefundShippingAmount}), 2, 0)) as decimal(10,2))")
+      
+      ////Calculate QuantityToRefund
+      cy.sqlServer("select ("+productData.purchasedQuantity+" / 2 ) ")
+      
+      
+      ////Get TCGTaxAmt
+      cy.sqlServer("Select TCGTaxAmt From dbo.SellerOrder "
+      Where OrderNumber = '${OrderNumber}'")
+      
+      ////Calculate RefundedTax
+      cy.sqlServer("select cast(Round (${TCGTaxAmt} /2 ,2,0) as decimal(10,2))")
 
     
-   // const partialRefundProductQuery = UPDATE dbo.SellerProServicesSettings SET IsPayNowEnabled = 1 where SellerId = 62
+ 
     
+  ////examples
+  //   const partialRefundProductFile = "cypress/fixtures/filesDuringTestRun/partialRefundProduct.json"
+  //   databaseQueryFunctions.queryDBWriteToFile(partialRefundProductQuery, partialRefundProductFile)
+  //   const state = (readFile[4])
 
-   // const partialRefundProductFile = "cypress/fixtures/filesDuringTestRun/partialRefundProduct.json"
-    //databaseQueryFunctions.queryDBWriteToFile(partialRefundProductQuery, partialRefundProductFile)
-    //const state = (readFile[4])
 
+  //   const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = " + Cypress.env("sellerId")
+  //   const sellerProServicesSettingsFile = "cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json"
 
-    // const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = " + Cypress.env("sellerId")
-    // const sellerProServicesSettingsFile = "cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json"
-
-    // databaseQueryFunctions.queryDBWriteToFile(sellerProServicesSettingsQuery, sellerProServicesSettingsFile)
-    // cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
-    //     const state = (readFile[4])
-    //     cy.log(state)
-    // })
-    // cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
-    //     const zip = (readFile[5])
-    //     cy.log(zip)
-    // })
+  //   databaseQueryFunctions.queryDBWriteToFile(sellerProServicesSettingsQuery, sellerProServicesSettingsFile)
+  //   cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
+  //       const state = (readFile[4])
+  //       cy.log(state)
+  //   })
+  //   cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
+  //       const zip = (readFile[5])
+  //       cy.log(zip)
+  //   })
 
 
 
