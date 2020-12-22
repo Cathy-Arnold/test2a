@@ -27,36 +27,53 @@ describe('Create a cart using a Post statement', () => {
 
     //const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp INNER JOIN dbo.seller s on sp.sellerid = s.SellerId INNER JOIN PDT.ProductCondition pc on PC.ProductConditionId = sp.StoreProductConditionID INNER JOIN PDT.Product p on p.ProductId = PC.ProductId where s.sellerid = "+Cypress.env("sellerId")+" and sp.StoreProductConditionId = "+productData.partialRefundSkuId+ "and sp.ChannelId = 1"
     
-    // const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp" 
-    // + "INNER JOIN dbo.seller s on sp.sellerid = s.SellerId" 
-    // + "INNER JOIN PDT.ProductCondition pc on PC.ProductConditionId = sp.StoreProductConditionID" 
+    // const partialRefundProductQuery = "select sp.storePriceId from dbo.storeprice sp " 
+    // + "INNER JOIN dbo.seller s on sp.sellerid = s.SellerId " 
+    // + "INNER JOIN PDT.ProductCondition pc on PC.ProductConditionId = sp.StoreProductConditionID " 
     // + "INNER JOIN PDT.Product p on p.ProductId = PC.ProductId "
     // + "where s.sellerid = "+Cypress.env("sellerId")
     // + "and sp.StoreProductConditionId = "+productData.partialRefundSkuId
     // + "and sp.ChannelId = 1"
+
+
+    cy.sqlServer("UPDATE dbo.SellerProServicesSettings SET IsPayNowEnabled = 1 where SellerId = "+Cypress.env("sellerId"))
+    //cy.sqlServer("UPDATE dbo.Seller set DailyRefundCount = 0 where SellerId = "+Cypress.env("sellerId"))
+
+
+
+    // cy.sqlServer("DECLARE @SellerId BIGINT "
+    // + "SELECT @SellerId = "+Cypress.env("sellerId") 
+    // + "IF EXISTS (select top 1 * from dbo.ShippingSellerPrice where ShippingMethodId  = 2 and ShippingCategoryId = 1 and SellerId = @SellerId) "
+    // + "BEGIN "
+    // + "UPDATE dbo.ShippingSellerPrice SET Price = "+Cypress.env("expeditedShipping")"+ , UpdatedAt = getutcdate(), UpdatedByUserID = (select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'), IsActive = 1, IsOverThreshold = 0, IsInviteOnly = 0, Threshold = Null WHERE ShippingSellerPriceId = (select ShippingSellerPriceId from dbo.ShippingSellerPrice where ShippingMethodId  = 2 and ShippingCategoryId = 1 and SellerId = @SellerId) "
+    // + "END     "              
+    // + "ELSE BEGIN "
+    // + "INSERT INTO dbo.ShippingSellerPrice (ShippingCategoryId, ShippingMethodId, SellerId, CountryCode, Price, ShippingMethodCode, CreatedAt, UpdatedAt, CreatedByUserId, UpdatedByUserId, IsActive, IsOverThreshold, IsInviteOnly, Threshold) "
+    // + "    SELECT ShippingCategoryId,	2,	@SellerId,	'US',	"+Cypress.env("expeditedShipping")"+ ,	'TCGFIRSTCLASS',	getutcdate(),	getutcdate(),	(select UserId from dbo.[User] where ProviderUserName = 'admin@auto.com'),	NULL,	1,	0,	0,	NULL FROM ShippingCategory "
+    // + "END") 
+
+
     
-    const partialRefundProductQuery = "select sp.storePriceId     from dbo.storeprice sp     Inner Join dbo.seller s on sp.sellerid = s.SellerId         where s.sellerid = 8    and sp.StoreProductConditionId =  3238310 and sp.ChannelId = 1"
-    //const partialRefundProductQuery = "select s.sellerId          from dbo.seller s          Inner Join dbo.ratecard r on s.RateCardId = r.RateCardId    where s.SellerId = 8   and r.RateCardId = 29                     and s.SellerLevelId = 14"
-    //const partialRefundProductQuery = "select s.sellerId          from dbo.seller s          Inner Join dbo.ratecard r on s.RateCardId = r.RateCardId    where s.SellerId = 8   and r.RateCardId = 29                     and s.SellerLevelId = 14"
+   // const partialRefundProductQuery = UPDATE dbo.SellerProServicesSettings SET IsPayNowEnabled = 1 where SellerId = 62
     
 
-    const partialRefundProductFile = "cypress/fixtures/filesDuringTestRun/partialRefundProduct.json"
-    databaseQueryFunctions.queryDBWriteToFile(partialRefundProductQuery, partialRefundProductFile)
+   // const partialRefundProductFile = "cypress/fixtures/filesDuringTestRun/partialRefundProduct.json"
+    //databaseQueryFunctions.queryDBWriteToFile(partialRefundProductQuery, partialRefundProductFile)
     //const state = (readFile[4])
 
 
-    const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = " + Cypress.env("sellerId")
-    const sellerProServicesSettingsFile = "cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json"
+    // const sellerProServicesSettingsQuery = "select SellerId,StoreName,StreetAddress,City,[State],Zip from dbo.SellerProServicesSettings where SellerId = " + Cypress.env("sellerId")
+    // const sellerProServicesSettingsFile = "cypress/fixtures/filesDuringTestRun/SellerProServicesSettings.json"
 
-    databaseQueryFunctions.queryDBWriteToFile(sellerProServicesSettingsQuery, sellerProServicesSettingsFile)
-    cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
-        const state = (readFile[4])
-        cy.log(state)
-    })
-    cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
-        const zip = (readFile[5])
-        cy.log(zip)
-    })
+    // databaseQueryFunctions.queryDBWriteToFile(sellerProServicesSettingsQuery, sellerProServicesSettingsFile)
+    // cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
+    //     const state = (readFile[4])
+    //     cy.log(state)
+    // })
+    // cy.readFile(sellerProServicesSettingsFile).then((readFile) => {
+    //     const zip = (readFile[5])
+    //     cy.log(zip)
+    // })
 
 
 

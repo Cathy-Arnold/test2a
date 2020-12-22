@@ -1,11 +1,15 @@
 {
     "partialRefundSkuId": "3238310",
+    "productId": "122642",
     "productName": "Blooming Marsh",
     "categoryName":	"Magic",
     "setName": "Kaladesh",
     "conditionName": "Near Mint - Spanish",
     "rarity" : "R",
-    "number": "243"
+    "number": "243",
 
-    
+    "price": "19.50",
+    "quantity": "25",
+    "purchasedQuantity": "6"
+      
 }

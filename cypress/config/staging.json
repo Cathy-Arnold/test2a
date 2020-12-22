@@ -19,8 +19,9 @@
         "sellerEmail": "customerservice@adventureson.com",
         "sellerKey": "F417072D",
         "sellerId": "8",
+        "expeditedShipping": "6.99",
         
-        "umbracoUrl": "https://stage-tcgplayer.s1.umbraco.io/",
+        "umbracoUrl": "https://stage-tcgplayer.s1.umbraco.io",
         "adminURL": "store.tcgplayer-stg.com/admin",
       
         
