@@ -20,7 +20,7 @@ export class UmbracoShoppingCart {
 
 
     //Shopping Cart
-    verifyPackageDetails(productName, setName, categoryName, rarity, conditionName, price) {
+    verifyPackageDetails(productName, setName, categoryName, rarity, conditionName, price, purchasedQuantity, quantity) {
         //Shopping Cart Header
         cy.get('.shoppingCartHeader').should('be.visible')
 
@@ -55,17 +55,16 @@ export class UmbracoShoppingCart {
             const itemPrice = $itemPrice.text().trim()
             expect(itemPrice).to.eql("$"+price)
         })
-        // cy.get('#cartItemQty_1758107665').then(($itemQuantity) => {      //item Quantity
-        //   const itemQuantity = $itemQuantity.text().trim()
-        //   expect(itemQuantity).to.eql('1')
-        // })
-        
-        
-        // //Remove until we can implement DB call to get inventory
-        // cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
-        //     const inventoryQuantity = $inventoryQuantity.text().trim()
-        //     expect(inventoryQuantity).to.eql('of 22')
-        // })
+        cy.get('#cartItemQty_1758107665').then(($itemQuantity) => {      //item Quantity
+            const itemQuantity = $itemQuantity.text().trim()
+            expect(itemQuantity).to.eql(purchasedQuantity)
+          })
+          
+          
+          cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
+              const inventoryQuantity = $inventoryQuantity.text().trim()
+              expect(inventoryQuantity).to.eql("of "+quantity)
+          })
 
 
         cy.get('.update > .cartStyle > span').should('be.visible')    //Update
