@@ -108,8 +108,8 @@ export class RefundQueries {
 
   //for Pro Sellers
     calculateCommissionFees(refundProductAmountValue) {
-        cy.server("select cast((Round((SELECT "+refundProductAmountValue+" * 0.0250), 2, 0)) as decimal(10,2))")
-            .as('commissionFees')
+       cy.server("select cast((Round((SELECT   "+refundProductAmountValue+" * 0.0250), 2, 0)) as decimal(10,2))")
+        .as('commissionFees')
     }
     //for Pro Sellers
     calculateCreditCardUSFees(refundAmountRequestedValue, refundedTaxvalue) {
