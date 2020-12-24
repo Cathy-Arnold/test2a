@@ -2,7 +2,7 @@
 
 
 import { admin } from "../../support/page_objects/admin/adminFunctions"
-import { internalApi } from "../../support/page_objects/admin/adminSettings/internalApiJobs"
+import { internalApiJobs } from "../../support/page_objects/admin/adminSettings/internalApiJobs"
 
 
 
@@ -26,12 +26,12 @@ describe('Process Orders', () => {
         cy.wait(10000)
 
         //Run 3 order prrocessing jobs
-        internalApi.runApiJob(validateOrders)
-        internalApi.runSendOrders()
-        internalApi.runApiJob(processAllFees)
+        internalApiJobs.runApiJob(validateOrders)
+        internalApiJobs.runSendOrders()
+        internalApiJobs.runApiJob(processAllFees)
 
         //Remove later. For demo purposes only
-        internalApi.runApiJob(productsAlsoPurchasedDiceMasters)
+        internalApiJobs.runApiJob(productsAlsoPurchasedDiceMasters)
 
 
     })

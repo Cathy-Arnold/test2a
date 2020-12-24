@@ -1,6 +1,6 @@
 export class CreateCart {
 
-    createCartVistShoppingCartPage(buyer,product) {
+    createCartVistShoppingCartPage(buyer, product, purchasedQuantity) {
         cy.server()
         cy.request({
             method: 'POST',
@@ -11,7 +11,7 @@ export class CreateCart {
             {
                // "skuId": (Cypress.env("partialRefundSkuId")),
                "skuId": (product),
-                "quantity": 1,
+                "quantity": purchasedQuantity,
                 "channelId": 1,
                 "user": (buyer)
             }

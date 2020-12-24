@@ -20,7 +20,7 @@ export class UmbracoShoppingCart {
 
 
     //Shopping Cart
-    verifyPackageDetails(productName, setName, categoryName, rarity, conditionName) {
+    verifyPackageDetails(productName, setName, categoryName, rarity, conditionName, price) {
         //Shopping Cart Header
         cy.get('.shoppingCartHeader').should('be.visible')
 
@@ -53,7 +53,7 @@ export class UmbracoShoppingCart {
         })
         cy.get('.priceContents').then(($itemPrice) => {      //price of item
             const itemPrice = $itemPrice.text().trim()
-            expect(itemPrice).to.eql('$5.26')
+            expect(itemPrice).to.eql("$"+price)
         })
         // cy.get('#cartItemQty_1758107665').then(($itemQuantity) => {      //item Quantity
         //   const itemQuantity = $itemQuantity.text().trim()
@@ -72,6 +72,7 @@ export class UmbracoShoppingCart {
         cy.get('.remove').should('be.visible')   //remove
     }
 
+
     verifyOrderSummary() {
         //Order Summary
         cy.get('#sellerSummary_'+Cypress.env("sellerId")+' > h2').should('be.visible')    //Order Summary text
@@ -84,7 +85,7 @@ export class UmbracoShoppingCart {
 
         cy.get('#sellerSummaryItemTotal_'+Cypress.env("sellerId")).then(($itemsDollarTotal) => {     // Items Dollar Total
             const itemsDollarTotal = $itemsDollarTotal.text()
-            expect(itemsDollarTotal).to.eql('$5.26')
+            expect(itemsDollarTotal).to.eql("$"+price)
         })
 
         cy.get('#sellerSummary_'+Cypress.env("sellerId")+' > :nth-child(7) > tbody > :nth-child(1) > td').should('be.visible')   //Shipping Options text
@@ -103,7 +104,7 @@ export class UmbracoShoppingCart {
 
         cy.get('#shippingOptionCost_'+Cypress.env("sellerId")+'_23801 > span').then(($expeditedShippingAmount) => {       //Expedited Shipping amount
             const expeditedShippingAmount = $expeditedShippingAmount.text()
-            expect(expeditedShippingAmount).to.eql('$6.99')
+            expect(expeditedShippingAmount).to.eql(+Cypress.env("expeditedShipping"))
         })
 
         cy.get('#shippingColumn_'+Cypress.env("sellerId")+'_194525 > .shippingText').should('be.visible')   //In-Store Pickup text
@@ -120,7 +121,7 @@ export class UmbracoShoppingCart {
 
         cy.get(' #sellerSubtotal_'+Cypress.env("sellerId")).then(($subtotalAmount) => {     //Subtotal amount
             const subtotalAmount = $subtotalAmount.text()
-            expect(subtotalAmount).to.eql('$5.26')
+            expect(subtotalAmount).to.eql("$"+priceprice)
         })
 
     }

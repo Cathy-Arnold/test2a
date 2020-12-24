@@ -1,5 +1,5 @@
 
-export class internalApiJobs {
+export class InternalApiJobs {
 
     runApiJob(jobName) {
         cy.server()
@@ -46,6 +46,6 @@ export class internalApiJobs {
 
 
 }
-export const internalApi = new internalApiJobs()
+export const internalApiJobs = new InternalApiJobs()
 
 
