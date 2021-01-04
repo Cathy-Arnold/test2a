@@ -20,26 +20,28 @@ export class RefundQueries {
       .as('sellerInventoryQuantity')
     }
 
-
     calculateProductTotalPrice(purchasedQuantity, price) {
-        cy.sqlServer("select cast((Round((SELECT " + purchasedQuantity + " * " + price + "), 2, 0)) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + purchasedQuantity + " * " + price + "), 2, 0)) as decimal(10,2)))  AS Price")
             .as('productTotalPrice')
     }
 
+
+
     calculateRefundProductAmount(productTotal) {
-        cy.sqlServer("select cast((Round((SELECT " + productTotal + " / 2 ), 2, 0)) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + productTotal + " / 2 ), 2, 0)) as decimal(10,2))) AS Price")
             .as('refundProductAmount')
     }
 
+  
 
     calculateRefundShippingAmount(expeditedShipping) {
-        cy.sqlServer("select cast((Round((SELECT " + expeditedShipping + " / 2 ), 2, 0)) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + expeditedShipping + " / 2 ), 2, 0)) as decimal(10,2))) AS Price")
             .as('refundShippingAmount')
     }
 
     calculateTotalRefundAmountRequested(refundProductAmountValue, refundShippingAmountValue) {
-        cy.sqlServer("select cast((Round((SELECT " + refundProductAmountValue + " + " + refundShippingAmountValue + "), 2, 0)) as decimal(10,2))")
-            .as('totalrefundAmountRequested')
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + refundProductAmountValue + " + " + refundShippingAmountValue + "), 2, 0)) as decimal(10,2))) AS Price")
+            .as('totalRefundAmountRequested')
     }
 
     calculateQuantityToRefund(purchasedQuantity) {
@@ -94,12 +96,12 @@ export class RefundQueries {
     }
 
     calculateRefundedTax(tcgTaxAmtValue) {
-        cy.sqlServer("select cast(Round (" + tcgTaxAmtValue + " /2 ,2,0) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast(Round (" + tcgTaxAmtValue + " /2 ,2,0) as decimal(10,2))) AS Price")
             .as('refundedTax')
     }
 
-    calculateTotalRefundAmount(totalrefundAmountRequestedValue, refundedTaxValue) {
-        cy.server("select cast((Round((SELECT " + totalrefundAmountRequestedValue + " + " + refundedTaxValue + "), 2, 0)) as decimal(10,2))")
+    calculateTotalRefundAmount(totalRefundAmountRequestedValue, refundedTaxValue) {
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + totalRefundAmountRequestedValue + " + " + refundedTaxValue + "), 2, 0)) as decimal(10,2))) AS Price")
             .as('totalRefundAmount')
     }
 
@@ -108,22 +110,22 @@ export class RefundQueries {
 
   //for Pro Sellers
     calculateCommissionFees(refundProductAmountValue) {
-       cy.server("select cast((Round((SELECT   "+refundProductAmountValue+" * 0.0250), 2, 0)) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT "+ refundProductAmountValue +" * 0.0250), 2, 0)) as decimal(10,2))) AS Price")
         .as('commissionFees')
     }
     //for Pro Sellers
-    calculateCreditCardUSFees(refundAmountRequestedValue, refundedTaxvalue) {
-        cy.server("Select cast((Round((SELECT ("+refundAmountRequestedValue+" + "+refundedTaxvalue+") * 0.0250), 2, 0)) as decimal(10,2))")
+    calculateCreditCardUSFees(totalRefundAmountRequestedValue,refundedTaxValue) {
+        cy.sqlServer("Select Convert (varchar, cast((Round((SELECT ("+totalRefundAmountRequestedValue+" + "+refundedTaxValue+") * 0.0250), 2, 0)) as decimal(10,2))) AS Price")
             .as('creditCardUSFees')
     }
     //for Pro Sellers
     calculateShippingFees(refundShippingAmountValue) {
-        cy.server("select cast((Round((SELECT "+refundShippingAmountValue+" * 0.0250), 2, 0)) as decimal(10,2))")
+        cy.sqlServer("select Convert (varchar, cast((Round((SELECT "+refundShippingAmountValue+" * 0.0250), 2, 0)) as decimal(10,2))) AS Price")
             .as('shippingFees')
     }
 
 
-
+    
 
 
     

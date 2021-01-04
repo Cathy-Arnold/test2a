@@ -56,8 +56,8 @@ describe('Create a cart using a Post statement', () => {
         refundQueries.calculateTotalRefundAmountRequested(refundProductAmount, refundShippingAmount)
       })
     })
-    cy.get('@totalrefundAmountRequested').then(totalrefundAmountRequested => {
-      cy.log("Total Refund Amount Requested = " + totalrefundAmountRequested)
+    cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+      cy.log("Total Refund Amount Requested = " + totalRefundAmountRequested)
     })
     //Calculate Product Quantity to Refund
     refundQueries.calculateQuantityToRefund(productData.purchasedQuantity)
@@ -85,7 +85,7 @@ describe('Create a cart using a Post statement', () => {
 
 
     //Shopping Cart Page
-    
+
     shoppingCartQueries.getCartItemId(buyerData.buyerEmail6)
     cy.get('@cartItemId').then(cartItemId => {
       cy.log("CartItemId = " + cartItemId)
@@ -102,16 +102,16 @@ describe('Create a cart using a Post statement', () => {
           //   cy.log("Verifing Package Details")
           //   umbracoShoppingCart.verifyPackageDetails(productData.productName, productData.setName, productData.categoryName, productData.rarity, productData.conditionName, productData.price, productData.purchasedQuantity, sellerInventoryQuantity)
           // })
-         
-         
+
+
           // //Verify Order Summary
           // cy.log("Verifing Order Summary")
           // umbracoShoppingCart.verifyOrderSummary(productData.purchasedQuantity, productTotalPrice, expeditedShippingSellerPriceId, Cypress.env("expeditedShipping"))
-          
-          
+
+
           //Click Expedited Checkout
           cy.get("#shippingOptionRadio_" + Cypress.env("sellerId") + "_" + expeditedShippingSellerPriceId).click()
-          
+
         })
       })
     })
@@ -201,103 +201,106 @@ describe('Create a cart using a Post statement', () => {
 
 
 
+  //get Refund table info
+  cy.get('@orderNumber').then(orderNumber => {
+    const refundQuery = ("Select o.OrderStatusId, so.SellerOrderStatusId, r.RefundTypeId, r.RefundStatusId, CONVERT(varchar, r.TotalAmt) AS Price, CONVERT(varchar,  r.VendorSalesTaxAmt) AS Price, CONVERT(varchar,  r.NYSalesTaxAmt) AS Price, CONVERT(varchar,  r.RequestedAmt) AS Price, CONVERT(varchar,  r.ShippingAmt) AS Price, r.RefundNote, r.IsTransactionProcessed, CONVERT(varchar,  r.TotalAmtAfterStoreCredit) AS Price "
+      + "from dbo.SellerOrder so "
+      + "Inner Join dbo.[Order] o On o.OrderId = so.OrderId "
+      + "Inner Join dbo.Refund r On r.SellerOrderId = so.SellerOrderId "
+      + "Where so.OrderNumber = '" + orderNumber + "'")
 
-    //get Refund table info
-    cy.get('@orderNumber').then(orderNumber => {
-      const refundQuery = ("Select o.OrderStatusId, so.SellerOrderStatusId, r.RefundTypeId, r.RefundStatusId, CONVERT(varchar, r.TotalAmt) AS Price, CONVERT(varchar,  r.VendorSalesTaxAmt) AS Price, CONVERT(varchar,  r.NYSalesTaxAmt) AS Price, CONVERT(varchar,  r.RequestedAmt) AS Price, CONVERT(varchar,  r.ShippingAmt) AS Price, r.RefundNote, r.IsTransactionProcessed, CONVERT(varchar,  r.TotalAmtAfterStoreCredit) AS Price "
-        + "from dbo.SellerOrder so "
-        + "Inner Join dbo.[Order] o On o.OrderId = so.OrderId "
-        + "Inner Join dbo.Refund r On r.SellerOrderId = so.SellerOrderId "
-        + "Where so.OrderNumber = '"+orderNumber+"'")
-
-      const refundFile = "cypress/fixtures/filesDuringTestRun/refundTablePartialRefundProStoreTcgTaxCC.json"
-      databaseQueryFunctions.queryDBWriteToFile(refundQuery, refundFile)
-
-
-      // cy.readFile(refundFile).then((readFile) => {
-      //   //OrderStatusId
-      //   cy.log('OrderStatusId')
-      //   expect(readFile[0]).to.eql(3)
-      //   //SellerOrderStatusId
-      //   expect(readFile[1]).to.eql(13)
-      //   //RefundTypeId
-      //   expect(readFile[2]).to.eql(2)
-      //   //RefundStatusId
-      //   expect(readFile[3]).to.eql(2)
-      //   //TotalAmt
-      //   cy.get('@totalrefundAmountRequested').then(totalrefundAmountRequested => {
-      //     cy.get('@refundedTax').then(refundedTax => {
-      //       refundQueries.calculateTotalRefundAmount(totalrefundAmountRequested, refundedTax)
-      //       cy.get('@totalRefundAmount').then(totalRefundAmount => {
-      //         cy.log('totalRefundAmount')
-      //         expect(readFile[4]).to.eql(totalRefundAmount)
-      //       })
-      //     })
-      //   })
-      //   //VendorSalesTaxAmt
-      //   cy.log('VendorSalesTaxAmt')
-      //   expect(readFile[5]).to.eql('0.00')
-      //   //NYSalesTaxAmt
-      //   cy.get('@refundedTax').then(refundedTax => {
-      //     expect(readFile[6]).to.eql(refundedTax)
-      //   })
-      //   //RequestedAmt
-      //   cy.get('@refundAmountRequested').then(refundAmountRequested => {
-      //     expect(readFile[7]).to.eql(refundAmountRequested)
-      //   })
-      //   cy.get('@refundShippingAmount').then(refundShippingAmount => {
-      //     expect(readFile[8]).to.eql(refundShippingAmount)
-      //   })
-      //   //CancellationReason
-      //   cy.get('@refundText').then(refundText => {
-      //     expect(readFile[8]).to.eql(refundText)
-      //   })
-      //   expect(readFile[9]).to.eql(3)
-      //   //IsTransactionProcessed
-      //   expect(readFile[10]).to.eql('false')
-      //   //TotalAmtAfterStoreCredit
-      //   cy.get('@totalRefundAmount').then(totalRefundAmount => {
-      //     expect(readFile[11]).to.eql(totalRefundAmount)
-      //   })
-
-
-      // })
-
-    })
-
-    //verifying fees
-    cy.get('@orderNumber').then(orderNumber => {
-      const feeQuery = ("Select so.OrderNumber, f.Name, sof.* "
-        + " from dbo.SellerOrderFee sof  "
-        + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
-        + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
-        + "Where so.OrderNumber = '" + orderNumber + "' "
-        + "and sof.RateProcessingTypeId = 2 "
-        + "Order by f.Name")
-      const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
-      databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
-
-
-      cy.get('@refundProductAmount').then(refundProductAmount => {
-        refundQueries.calculateCommissionFees(refundProductAmount)
-        expect(readFile[0]).to.eql(commissionFees)
-      })
-
-      cy.get('@refundAmountRequested').then(refundAmountRequested => {
+    const refundFile = "cypress/fixtures/filesDuringTestRun/refundTablePartialRefundProStoreTcgTaxCC.json"
+    databaseQueryFunctions.queryDBWriteToFile(refundQuery, refundFile)
+  
+    cy.readFile(refundFile).then((readFile) => {
+      //OrderStatusId
+      expect(readFile[0]).to.eql(3)
+      //SellerOrderStatusId
+      expect(readFile[1]).to.eql(13)
+      //RefundTypeId
+      expect(readFile[2]).to.eql(2)
+      //RefundStatusId
+      expect(readFile[3]).to.eql(2)
+      //totalRefundAmount
+      cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
         cy.get('@refundedTax').then(refundedTax => {
-          refundQueries.calculateCreditCardUSFees(refundAmountRequested, refundedTax)
-          expect(readFile[1]).to.eql(creditCardUSFees)
+          refundQueries.calculateTotalRefundAmount(totalRefundAmountRequested, refundedTax)
+          cy.get('@totalRefundAmount').then(totalRefundAmount => {
+            cy.log('totalRefundAmount')
+            expect(readFile[4]).to.eql(totalRefundAmount)
+          })
         })
       })
-
+      //VendorSalesTaxAmt
+      expect(readFile[5]).to.eql('0.00')
+      //refundedTax
+      cy.get('@refundedTax').then(refundedTax => {
+        expect(readFile[6]).to.eql(refundedTax)
+      })
+      //RequestedAmt
+      cy.log('totalRefundAmountRequested')
+      cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+        expect(readFile[7]).to.eql(totalRefundAmountRequested)
+      })
+      //refundShippingAmount
+      cy.log('refundShippingAmount')
       cy.get('@refundShippingAmount').then(refundShippingAmount => {
-        refundQueries.calculateShippingFees(refundShippingAmount)
-        expect(readFile[2]).to.eql(shippingFees)
+        expect(readFile[8]).to.eql(refundShippingAmount)
+      })
+      //CancellationReason
+      cy.log('CancellationReason')
+      cy.get('@refundText').then(refundText => {
+        expect(readFile[9]).to.eql(refundText)
+      })
+      //  //IsTransactionProcessed
+      //expect(readFile[10]).to.eql('false')
+      //TotalAmtAfterStoreCredit
+      cy.get('@totalRefundAmount').then(totalRefundAmount => {
+        expect(readFile[11]).to.eql(totalRefundAmount)
       })
     })
-
-
-
-
   })
+
+  //verifying fees
+  cy.get('@orderNumber').then(orderNumber => {
+     const feeQuery = ("Select sof.amt "
+      + " from dbo.SellerOrderFee sof  "
+      + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
+      + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
+      + "Where so.OrderNumber = '" + orderNumber + "' "
+      + "and sof.RateProcessingTypeId = 2 "
+      + "Order by f.Name")
+    const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
+    databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
+
+    cy.readFile(feeFile).then((readFile) => {
+      cy.get('@refundProductAmount').then(refundProductAmount => {
+        refundQueries.calculateCommissionFees(refundProductAmount)
+        cy.get('@commissionFees').then(commissionFees => {
+          cy.log("commissionFees = " + commissionFees)
+          expect(readFile[0].[0]).to.eql(commissionFees)
+        })
+      })
+      cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+        cy.get('@refundedTax').then(refundedTax => {
+          refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+          cy.get('@creditCardUSFees').then(creditCardUSFees => {
+            cy.log("CreditCardUSFees = " + creditCardUSFees)
+            expect(readFile[1].[0]).to.eql(creditCardUSFees)
+          })
+        })
+      })
+      cy.get('@refundShippingAmount').then(refundShippingAmount => {
+        refundQueries.calculateShippingFees(refundShippingAmount)
+        cy.get('@shippingFees').then(shippingFees => {
+          cy.log("ShippingFees = " + shippingFees)
+          expect(readFile[2].[0]).to.eql(shippingFees)
+        })
+      })
+    })
+  })
+
+
+
+})
 })
