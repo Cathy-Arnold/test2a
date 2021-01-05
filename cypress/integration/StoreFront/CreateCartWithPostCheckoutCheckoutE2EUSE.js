@@ -5,8 +5,8 @@ import { createCart } from "../../support/page_objects/umbraco/createCart"
 import { shoppingCartReviewPage } from "../../support/page_objects/umbraco/checkout"
 import { umbracoShoppingCart } from "../../support/page_objects/umbraco/umbracoShoppingCart"
 
-import { PartialRefundPage, VerifyPartialRefundItems } from "../../support/page_objects/admin/orders/partialRefund"
-import { VerifyPartialRefund } from "../../support/page_objects/admin/orders/partialRefund"
+import { partialRefundPageFunctions, verifyPartialRefundItems } from "../../support/page_objects/admin/orders/partialRefund"
+//import { verifyPartialRefund } from "../../support/page_objects/admin/orders/partialRefund"
 import { admin } from "../../support/page_objects/admin/adminFunctions"
 import { internalApiJobs } from "../../support/page_objects/admin/adminSettings/internalApiJobs"
 
@@ -120,10 +120,13 @@ describe('Create a cart using a Post statement', () => {
 
     cy.setCookie('BuyerRevalidationKey', '', { httpOnly: true })   //set a blank cookie that expires 20 years into the future
     cy.setCookie('InContext_' + Cypress.env("sellerKey") + '_AWS' + Cypress.env("envUpper"), 'SellerId=' + Cypress.env("sellerId") + '&SellerKey=' + Cypress.env("sellerKey") + '&StoreName=adventuresON&StreetAddress=6026+Fair+Oaks+Blvd&City=Carmichael&StateProvince=CA&PostalCode=95608&EmailAddress=customerservice%40adventuresON.com&PhoneNumber=(916)+973-9064&StorefrontUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2f&CartKey=+cartKey+&LogoImageUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2fmedia%2f1021%2fdefault-logo.png&IsPayNowEnabled=True&IsPayLaterEnabled=True&ChannelId=1', { httpOnly: true })
-
-    //Checkout Page
+    cy.wait(5000)  //have to add wait statement to ensure checkout button is not covered by overlay
     cy.get('#btnCheckout1').click()
-    cy.wait(25000)  //have to add wait statemtn since timeout below is not working.
+    
+    
+    
+    //Checkout Page
+    cy.wait(25000)  //have to add wait statement since timeout below is not working.
     cy.get('[value="Mastercard"]'), { timeout: 180000 }   //Will look for Mastercard input box up to 3 minutes.  Ensures page loads.
     shoppingCartReviewPage.checkoutWithMasterCard()
 
@@ -165,21 +168,24 @@ describe('Create a cart using a Post statement', () => {
     //process partial refund
     cy.get('@orderNumber').then(orderNumber => {
       const refundText = "Automation Test: Refund " + orderNumber
-      //cy.get('#Message').type(refundText)
+      cy.get('#Message').type(refundText)
       //.as("refundText")
+
+
+      //cy.log(refundText)
       cy.get('@quantityToRefund').then(quantityToRefund => {
         cy.get('@refundProductAmount').then(refundProductAmount => {
           cy.get('@refundShippingAmount').then(refundShippingAmount => {
-            PartialRefundPage.enterPartialRefundDetails(refundText, quantityToRefund, refundProductAmount, refundShippingAmount)
+            verifyPartialRefundItems.enterPartialRefundDetails(refundText, quantityToRefund, refundProductAmount, refundShippingAmount)
           })
         })
       })
     })
-    PartialRefundPage.clickPartialRefundButton()
+    partialRefundPageFunctions.clickPartialRefundButton()
 
     //Verify UI items on page after partial refund
-    VerifyPartialRefund.verifyPartialRefundNote()
-    VerifyPartialRefund.verifyPartialRefundButton()
+    verifyPartialRefundItems.verifyPartialRefundNote()
+    verifyPartialRefundItems.verifyPartialRefundButton()
 
     //NOT TESTED YET
     //Verify Order calculations
@@ -250,7 +256,7 @@ describe('Create a cart using a Post statement', () => {
       //CancellationReason
       cy.log('CancellationReason')
       cy.get('@refundText').then(refundText => {
-        expect(readFile[9]).to.eql(refundText)
+        expect(readFile[9]).to.eql("Automation Test: Refund " + orderNumber)
       })
       //  //IsTransactionProcessed
       //expect(readFile[10]).to.eql('false')
@@ -260,6 +266,77 @@ describe('Create a cart using a Post statement', () => {
       })
     })
   })
+
+
+  //verifyPartialRefundItems.verifyPartialRefundSection()
+
+// cy.get('@orderNumber').then(orderNumber => {
+    //   refundQueries.getSellerProductCode (orderNumber)
+    //   cy.get('@sellerProductCode')
+    //   //Add code to check if null.  If not then verify on UI
+    //   //SellerProductCode
+    //   ////cy.get('GET THIS FOR A MP REFUND').should('be.visible')
+    //    })
+
+
+    cy.get(':nth-child(9) > .widget > .title > h6').contains('Refunds')
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(1) > tr > :nth-child(1)').contains('Date')
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(1) > tr > :nth-child(2)').contains('Type')
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(2) > .gradeA > :nth-child(2)').contains('Partial')
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(1) > tr > :nth-child(3)').contains('Amount')
+
+
+    //cy.get('@refundProductAmount').then(refundProductAmount => {
+    //cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(2) > .gradeA > :nth-child(3)').contains(refundProductAmount)
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(2) > .gradeA > :nth-child(3)').contains('62.00')
+    // })
+
+
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(1) > tr > :nth-child(4)').contains('Refund Origin')
+    cy.get(':nth-child(9) > .widget > :nth-child(2) > .dataTables_wrapper > .display > :nth-child(2) > .gradeA > :nth-child(4)').contains('Buyer Initiated')
+    cy.get(':nth-child(1) > tr > :nth-child(5)').contains('Refund Reason')
+    cy.get('.gradeA > :nth-child(5)').contains('Product - Inventory Issue')
+
+
+    cy.get(':nth-child(1) > tr > :nth-child(6)').contains('Detail')
+    cy.get(':nth-child(6) > table > thead > tr > :nth-child(1)').contains('ID')
+    //placeholder for produict ID for MP refunds (Need to add actyal code)
+    cy.get(':nth-child(6) > table > tbody > tr > :nth-child(2)').contains(productData.categoryName + " - " + productData.setName + " - " + productData.productName + " - " + productData.conditionName)
+
+    //cy.get('@refundShippingAmount').then(refundShippingAmount => {
+    //cy.get(':nth-child(6) > div > span').contains("Refunded Shipping Cost: $"+refundShippingAmount)
+    cy.get(':nth-child(6) > div > span').contains("Refunded Shipping Cost: $3.50")
+    //})
+
+    cy.get('@orderNumber').then(orderNumber => {
+      cy.get(':nth-child(6) > :nth-child(3)').contains("Refund Reason: Automation Test: Refund " + orderNumber)
+    })
+
+    cy.get('.refundedQuantityHeader').contains('Refunded Qty')
+    cy.get('tr > :nth-child(3) > span').contains('0')
+
+
+
+    cy.get(':nth-child(6) > table > thead > tr > :nth-child(4)').contains('Refunded Amount')
+    //cy.get('@refundProductAmount').then(refundProductAmount => {
+    //cy.get(':nth-child(6) > :nth-child(3)').contains("$"+refundProductAmount)
+    cy.get(':nth-child(6) > table > tbody > tr > :nth-child(4)').contains("$58.50")
+    //})
+
+
+    cy.get('@refundProductAmount').then(refundProductAmount => {
+      refundQueries.calculateRemainingInventory(productData.quantity, refundProductAmount)
+      refundQueries.calculateQuantityAfterRefund(Cypress.env("sellerId"), productData.productConditionId)
+      cy.get('@remainingInventory').then(remainingInventory => {
+        cy.get('@quantityAfterRefund').then(quantityAfterRefund => {
+          expect(remainingInventory.to.eql(quantityAfterRefund))
+        })
+      })
+    })
+
+
+
+
 
   //verifying fees
   cy.get('@orderNumber').then(orderNumber => {

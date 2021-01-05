@@ -121,8 +121,9 @@ describe('Create a cart using a Post statement', () => {
     // cy.setCookie('BuyerRevalidationKey', '', { httpOnly: true })   //set a blank cookie that expires 20 years into the future
     // cy.setCookie('InContext_' + Cypress.env("sellerKey") + '_AWS' + Cypress.env("envUpper"), 'SellerId=' + Cypress.env("sellerId") + '&SellerKey=' + Cypress.env("sellerKey") + '&StoreName=adventuresON&StreetAddress=6026+Fair+Oaks+Blvd&City=Carmichael&StateProvince=CA&PostalCode=95608&EmailAddress=customerservice%40adventuresON.com&PhoneNumber=(916)+973-9064&StorefrontUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2f&CartKey=+cartKey+&LogoImageUrl=https%3a%2f%2fstage-tcgplayer.s1.umbraco.io%2fmedia%2f1021%2fdefault-logo.png&IsPayNowEnabled=True&IsPayLaterEnabled=True&ChannelId=1', { httpOnly: true })
 
-    // //Checkout Page
+    
     // cy.get('#btnCheckout1').click()
+    // //Checkout Page
     // cy.wait(25000)  //have to add wait statemtn since timeout below is not working.
     // cy.get('[value="Mastercard"]'), { timeout: 180000 }   //Will look for Mastercard input box up to 3 minutes.  Ensures page loads.
     // shoppingCartReviewPage.checkoutWithMasterCard()
@@ -290,7 +291,7 @@ describe('Create a cart using a Post statement', () => {
           refundQueries.calculateCommissionFees(refundProductAmount)
           cy.get('@commissionFees').then(commissionFees => {
             cy.log("commissionFees = " + commissionFees)
-            //expect(readFile[0].[0]).to.eql(commissionFees)
+            expect(readFile[0].[0]).to.eql(commissionFees)
           })
         })
         cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {

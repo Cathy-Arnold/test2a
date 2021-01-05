@@ -26,7 +26,7 @@ export class RefundQueries {
     }
 
 
-
+ 
     calculateRefundProductAmount(productTotal) {
         cy.sqlServer("select Convert (varchar, cast((Round((SELECT " + productTotal + " / 2 ), 2, 0)) as decimal(10,2))) AS Price")
             .as('refundProductAmount')
@@ -125,10 +125,48 @@ export class RefundQueries {
     }
 
 
+    //Get the SellerProductCode (Used when checking the ProductId [used by Crystal Commeres]).
+    getSellerProductCode (orderNumber) {
+        cy.sqlServer("Select sop.SellerProductCode From SellerOrder so Inner Join dbo.SellerOrderProduct sop on sop.SellerOrderId = so.SellerOrderId where so.ordernumber = "+orderNumber)
+            .as('sellerProductCode')
+    }
+
     
+    //Remaining Inventory
+    calculateRemainingInventory (quantity, refundProductAmount) {
+        cy.sqlServer("select "+quantity+" - "+refundProductAmount+")")
+            .as('remainingInventory')
+    }
 
 
-    
+
+
+//QuantityAfterRefund
+calculateQuantityAfterRefund (seller, productConditionId) {
+    cy.sqlServer("SELECT top 1 sp.Quantity FROM " 
+    + "dbo.StorePrice sp " 
+    + "INNER JOIN PDT.ProductCondition pc ON sp.StoreProductConditionID = pc.ProductConditionId " 
+    + "INNER JOIN PDT.Condition c ON pc.ConditionId = c.ConditionId " 
+    + "INNER JOIN PDT.Product p ON p.ProductId = pc.ProductId "
+    + "INNER JOIN PDT.SetName sn ON sn.SetNameID = p.SetNameID " 
+    + "INNER JOIN PDT.Category cat ON cat.CategoryID = p.CategoryId " 
+    + "INNER JOIN PDT.ProductType pt ON pt.ProductTypeId = p.ProductTypeID " 
+    + "INNER JOIN PDT.ProductStatus ps ON ps.ProductStatusId = p.ProductStatusId " 
+    + "INNER JOIN dbo.Seller s ON s.SellerID = sp.SellerId " 
+    + "INNER JOIN dbo.ShippingSellerPrice ssp ON s.SellerId = ssp.SellerId " 
+    + "AND p.ShippingCategoryId = ssp.ShippingCategoryId AND ssp.ShippingMethodId = 1 " 
+    + "Where s.SellerId = "+seller   
+    + "and sp.ChannelId = 1 " 
+    + "and sp.StoreProductConditionId = "+productConditionId
+    + "Order by sp.Quantity desc  ")
+    .as('quantityAfterRefund')
+}
+
+
+
+
+
+
 
 }
 

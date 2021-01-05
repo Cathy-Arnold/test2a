@@ -24,7 +24,7 @@
         "umbracoUrl": "https://stage-tcgplayer.s1.umbraco.io",
         "adminURL": "store.tcgplayer-stg.com/admin",
       
-        
+        "manageOrderPage": "https://store.tcgplayer-stg.com/admin/orders/ManageOrder/",
         
         "partialRefundPageUrl1": "https://store.tcgplayer-stg.com/admin/orders/partialRefund/",
         "partialRefundPageUrl2": "?sellerKey=F417072D",
