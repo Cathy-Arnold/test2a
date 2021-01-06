@@ -18,7 +18,7 @@ describe('Create a cart using a Post statement', () => {
   
     cy.readFile(refundFile).then((readFile) => {
       //RefundId
-      expect(readFile[0]).to.eql("8")
+      expect(readFile[0]).to.eql(8)
       //SellerOrderId
       expect(readFile[1]).to.eql("173797")
     })
@@ -38,12 +38,12 @@ describe('Create a cart using a Post statement', () => {
     databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
 
     cy.readFile(feeFile).then((readFile) => {
-        expect(readFile[0].[0]).to.eql("1.46")
-        expect(readFile[1].[0]).to.eql("1.67")
+        expect(readFile[0].[0]).to.eql(1.46)
+        expect(readFile[1].[0]).to.eql(1.67)
           })
        
    
-  })
+ 
 
  
   
@@ -56,5 +56,5 @@ describe('Create a cart using a Post statement', () => {
           //do whatever you want with that variable
         })
 
-
+      })
 })

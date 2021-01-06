@@ -2,7 +2,7 @@
 export class PartialRefundPageFunctions {
 
     enterPartialRefundDetails(refundTextValue, quantityToRefundValue, refundProductAmountValue, refundShippingAmountValue) {
-        cy.get('#Message').type(refundTextValue).as("refundText")
+        cy.get('#Message').type(refundTextValue)
         cy.get("#refundOrigin").select(['Buyer Initiated']).should('have.value', '2')
         cy.get("#refundReason").select('Product - Inventory Issue').should('have.value', 'Product - Inventory Issue')
         cy.get('#inventoryChanges').select('Adjust Inventory').should('have.value', 'True')
@@ -40,6 +40,70 @@ export class VerifyPartialRefundItems {
 
 }
     export const verifyPartialRefundItems = new VerifyPartialRefundItems()
+
+
+export class Assert {
+
+    refundTable(readFile, totalRefundAmount, refundedTax, totalRefundAmountRequested, refundShippingAmount, refundText, totalRefundAmountValue) {
+    cy.readFile(readFile).then((file) => {
+        //OrderStatusId
+        expect(file[0]).to.eql(3)
+        //SellerOrderStatusId
+        expect(file[1]).to.eql(13)
+        //RefundTypeId
+        expect(file[2]).to.eql(2)
+        //RefundStatusId
+        expect(file[3]).to.eql(2)
+        //totalRefundAmount
+        // cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+        //  cy.get('@refundedTax').then(refundedTax => {
+        //    refundQueries.calculateTotalRefundAmount(totalRefundAmountRequested, refundedTax)
+        //    cy.get('@totalRefundAmount').then(totalRefundAmount => {
+        //      cy.log('totalRefundAmount')
+              expect(file[4]).to.eql(totalRefundAmount)
+    //        })
+    //      })
+    //    })
+        //VendorSalesTaxAmt
+        expect(file[5]).to.eql('0.00')
+        //refundedTax
+        //cy.get('@refundedTax').then(refundedTax => {
+          expect(file[6]).to.eql(refundedTax)
+       // })
+        //RequestedAmt
+      // cy.log('totalRefundAmountRequested')
+        //cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+          expect(file[7]).to.eql(totalRefundAmountRequested)
+       // })
+        //refundShippingAmount
+       //cy.log('refundShippingAmount')
+       // cy.get('@refundShippingAmount').then(refundShippingAmount => {
+          expect(file[8]).to.eql(refundShippingAmount)
+       // })
+        //CancellationReason
+       // cy.log('CancellationReason')
+        //cy.get('@refundText').then(refundText => {
+          expect(file[9]).to.eql(refundText)
+       // })
+        //  //IsTransactionProcessed
+        //expect(file[10]).to.eql('false')
+        //TotalAmtAfterStoreCredit
+       // cy.get('@totalRefundAmount').then(totalRefundAmount => {
+          expect(file[11]).to.eql(totalRefundAmountValue)
+        //})
+    })
+      }
+    }
+
+
+      export const assert = new Assert()
+
+
+
+
+
+
+
 
     // verifyPartialRefundSection(categoryName, setName, productName, conditionName,refundShippingAmount,orderNumber, refundProductAmount, quantity, refundProductAmount) {
     //     cy.get(':nth-child(9) > .widget > .title > h6').contains('Refunds')

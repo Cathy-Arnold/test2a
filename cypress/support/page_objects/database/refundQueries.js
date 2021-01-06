@@ -105,7 +105,15 @@ export class RefundQueries {
             .as('totalRefundAmount')
     }
 
-
+    queryRefundTable(orderNumber, fileName) {
+        cy.sqlServer("Select o.OrderStatusId, so.SellerOrderStatusId, r.RefundTypeId, r.RefundStatusId, CONVERT(varchar, r.TotalAmt) AS Price, CONVERT(varchar,  r.VendorSalesTaxAmt) AS Price, CONVERT(varchar,  r.NYSalesTaxAmt) AS Price, CONVERT(varchar,  r.RequestedAmt) AS Price, CONVERT(varchar,  r.ShippingAmt) AS Price, r.RefundNote, r.IsTransactionProcessed, CONVERT(varchar,  r.TotalAmtAfterStoreCredit) AS Price "
+        + "from dbo.SellerOrder so "
+        + "Inner Join dbo.[Order] o On o.OrderId = so.OrderId "
+        + "Inner Join dbo.Refund r On r.SellerOrderId = so.SellerOrderId "
+        + "Where so.OrderNumber = '" + orderNumber + "'").then((response) => {
+            cy.writeFile(fileName, response)
+            })
+    }
 
 
   //for Pro Sellers
@@ -133,8 +141,8 @@ export class RefundQueries {
 
     
     //Remaining Inventory
-    calculateRemainingInventory (quantity, refundProductAmount) {
-        cy.sqlServer("select "+quantity+" - "+refundProductAmount+")")
+    calculateRemainingInventory (quantity, quantityToRefund) {
+        cy.sqlServer("select "+quantity+" - "+quantityToRefund)
             .as('remainingInventory')
     }
 
