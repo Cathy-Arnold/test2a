@@ -116,6 +116,21 @@ export class RefundQueries {
     }
 
 
+
+    queryFeeTable(orderNumber, fileName) {
+        cy.sqlServer("Select sof.amt "
+        + " from dbo.SellerOrderFee sof  "
+        + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
+        + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
+        + "Where so.OrderNumber = '" + orderNumber + "' "
+        + "and sof.RateProcessingTypeId = 2 "
+        + "Order by f.Name").then((response) => {
+            cy.writeFile(fileName, response)
+            })
+    }
+
+
+
   //for Pro Sellers
     calculateCommissionFees(refundProductAmountValue) {
         cy.sqlServer("select Convert (varchar, cast((Round((SELECT "+ refundProductAmountValue +" * 0.0250), 2, 0)) as decimal(10,2))) AS Price")

@@ -187,47 +187,39 @@ describe('Partial Refund for an Umbraco order', () => {
         })
       })
     })
+  
+
+
+  //verifying fees
+  cy.get('@orderNumber').then(orderNumber => {
+    const feeQuery = ("Select sof.amt "
+      + " from dbo.SellerOrderFee sof  "
+      + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
+      + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
+      + "Where so.OrderNumber = '" + orderNumber + "' "
+      + "and sof.RateProcessingTypeId = 2 "
+      + "Order by f.Name")
+    const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
+    databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
 
 
 
-    //verifying fees
-//get Refund table info
-cy.get('@orderNumber').then(orderNumber => {
-  const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
-  cy.wrap(feeFile).as('feeFile')
-  refundQueries.queryFeeTable(orderNumber, feeFile)
-})
+    cy.get('@refundProductAmount').then(refundProductAmount => {
+      refundQueries.calculateCommissionFees(refundProductAmount)
+      cy.get('@commissionFees').then(commissionFees => {
+        //assert.verifyFees(feeFile)
 
 
+        cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+          cy.get('@refundedTax').then(refundedTax => {
+            refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+            cy.get('@creditCardUSFees').then(creditCardUSFees => {
 
+              cy.get('@refundShippingAmount').then(refundShippingAmount => {
+                refundQueries.calculateShippingFees(refundShippingAmount)
+                cy.get('@shippingFees').then(shippingFees => {
 
-    
-    
-    // cy.get('@orderNumber').then(orderNumber => {
-    //   const feeQuery = ("Select sof.amt "
-    //     + " from dbo.SellerOrderFee sof  "
-    //     + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
-    //     + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
-    //     + "Where so.OrderNumber = '" + orderNumber + "' "
-    //     + "and sof.RateProcessingTypeId = 2 "
-    //     + "Order by f.Name")
-    //     const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
-    //   databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
-
-
-
-      cy.get('@refundProductAmount').then(refundProductAmount => {
-        refundQueries.calculateCommissionFees(refundProductAmount)
-        cy.get('@commissionFees').then(commissionFees => {
-          cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
-            cy.get('@refundedTax').then(refundedTax => {
-              refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
-              cy.get('@creditCardUSFees').then(creditCardUSFees => {
-                cy.get('@refundShippingAmount').then(refundShippingAmount => {
-                  refundQueries.calculateShippingFees(refundShippingAmount)
-                  cy.get('@shippingFees').then(shippingFees => {
-                    assert.verifyFees(feeFile, commissionFees, creditCardUSFees, shippingFees)
-                  })
+                  assert.verifyFees(feeFile, commissionFees, creditCardUSFees, shippingFees)
                 })
               })
             })
@@ -236,5 +228,134 @@ cy.get('@orderNumber').then(orderNumber => {
       })
     })
   })
-//})
+})
+})
 
+  // cy.readFile(feeFile).then((readFile) => {
+  //   cy.get('@refundProductAmount').then(refundProductAmount => {
+  //     refundQueries.calculateCommissionFees(refundProductAmount)
+  //     cy.get('@commissionFees').then(commissionFees => {
+  //       const cf = parseFloat(commissionFees)
+  //       expect(readFile[0].[0]).to.eql(cf)
+  //     })
+  //   })
+
+  //   cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+  //     cy.get('@refundedTax').then(refundedTax => {
+  //       refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+  //       cy.get('@creditCardUSFees').then(creditCardUSFees => {
+  //         const ccf = parseFloat(creditCardUSFees)
+  //       expect(readFile[1].[0]).to.eql(ccf)
+  //       })
+  //     })
+  //   })
+  //   cy.get('@refundShippingAmount').then(refundShippingAmount => {
+  //     refundQueries.calculateShippingFees(refundShippingAmount)
+  //     cy.get('@shippingFees').then(shippingFees => {
+  //       const sf = parseFloat(shippingFees)
+  //       expect(readFile[2].[0]).to.eql(sf)
+  //     })
+  //   })
+  // })
+
+
+//   cy.readFile(feeFile).then((readFile) => {
+//     cy.get('@refundProductAmount').then(refundProductAmount => {
+//       refundQueries.calculateCommissionFees(refundProductAmount)
+//       cy.get('@commissionFees').then(commissionFees => {
+//         cy.invoke(commissionFees).then(parseFloat).expect(readFile[0].[0]).to.eql(parseFloat) 
+//         //expect(readFile[0].[0]).to.eql(1.46)
+//         //expect(readFile[0].[0]).to.eql(parseFloat)
+//         cy.log(typeof commissionFees)
+//         cy.log(typeof parseFloat)
+//         //expect(readFile[0].[0]).to.eql(commissionFees)
+//       })
+//     })
+
+//     // cy.readFile(feeFile).then((readFile) => {
+//     //   cy.get('@refundProductAmount').then(refundProductAmount => {
+//     //     refundQueries.calculateCommissionFees(refundProductAmount)
+//     //     cy.get('@commissionFees').then(parseFloat => {
+//     //       cy.log("commissionFees = " + parseFloat)
+//     //       expect(readFile[0].[0]).to.eql(1.46)
+//     //       //expect(readFile[0].[0]).to.eql(parseFloat)
+//     //       cy.log(typeof commissionFees)
+//     //       cy.log(typeof parseFloat)
+//     //       //expect(readFile[0].[0]).to.eql(commissionFees)
+//     //     })
+//     //   })
+
+
+
+//     cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+//       cy.get('@refundedTax').then(refundedTax => {
+//         refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+//         cy.get('@creditCardUSFees').then(creditCardUSFees => {
+//           cy.log("CreditCardUSFees = " + creditCardUSFees)
+//           expect(readFile[1].[0]).to.eql(creditCardUSFees)
+//         })
+//       })
+//     })
+//     cy.get('@refundShippingAmount').then(refundShippingAmount => {
+//       refundQueries.calculateShippingFees(refundShippingAmount)
+//       cy.get('@shippingFees').then(shippingFees => {
+//         cy.log("ShippingFees = " + shippingFees)
+//         expect(readFile[2].[0]).to.eql(shippingFees)
+//       })
+//     })
+//   })
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //  //verifying fees
+  //   cy.get('@orderNumber').then(orderNumber => {
+  //     const feeQuery = ("Select sof.amt "
+  //       + " from dbo.SellerOrderFee sof  "
+  //       + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
+  //       + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
+  //       + "Where so.OrderNumber = '" + orderNumber + "' "
+  //       + "and sof.RateProcessingTypeId = 2 "
+  //       + "Order by f.Name")
+  //     const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
+  //     databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
+
+  //     cy.readFile(feeFile).then((readFile) => {
+  //       cy.get('@refundProductAmount').then(refundProductAmount => {
+  //         refundQueries.calculateCommissionFees(refundProductAmount)
+  //         cy.get('@commissionFees').then(commissionFees => {
+  //           cy.log("commissionFees = " + commissionFees)
+  //           expect(readFile[0].[0]).to.eql(commissionFees)
+  //         })
+  //       })
+  //       cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+  //         cy.get('@refundedTax').then(refundedTax => {
+  //           refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+  //           cy.get('@creditCardUSFees').then(creditCardUSFees => {
+  //             cy.log("CreditCardUSFees = " + creditCardUSFees)
+  //             expect(readFile[1].[0]).to.eql(creditCardUSFees)
+  //           })
+  //         })
+  //       })
+  //       cy.get('@refundShippingAmount').then(refundShippingAmount => {
+  //         refundQueries.calculateShippingFees(refundShippingAmount)
+  //         cy.get('@shippingFees').then(shippingFees => {
+  //           cy.log("ShippingFees = " + shippingFees)
+  //           expect(readFile[2].[0]).to.eql(shippingFees)
+  //         })
+  //       })
+  //     })
+  //   })
