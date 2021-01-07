@@ -1,4 +1,3 @@
-import { now } from "cypress/types/lodash"
 
 export class UmbracoShoppingCart {
 
