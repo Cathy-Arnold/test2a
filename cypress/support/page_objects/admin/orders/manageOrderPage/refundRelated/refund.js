@@ -1,12 +1,19 @@
-export class ManageOrderPage {
 
 
+export class VerifyPartialRefundItems {
 
+    verifyPartialRefundNote() {
+        cy.get('.nNote-container').then(($systemNote) => {
+            const systemNote = $systemNote.text()
+            expect(systemNote).to.contain('Partial Refund Processed.')
+        })
+    }
 
-    visitManageOrderPage(orderNumber) {
-        const partialRefundPageUrl1 = (Cypress.env("partialRefundPageUrl1"))
-        const partialRefundPageUrl2 = (Cypress.env("partialRefundPageUrl2"))
-        cy.visit(partialRefundPageUrl1 + orderNumber + partialRefundPageUrl2)
+    verifyPartialRefundButton() {
+        cy.get('.widget-content .mUser').eq(1).then(($button) => {     //will be the 2nd button for the seller view
+            const button = $button.text().trim()
+            expect(button).to.contain('Partial Refund')
+        })
     }
 
     uIChecksAfterPartialRefund(totalRefundAmountRequested, categoryName, setName, productName, conditionName, refundShippingAmount, orderNumber, refundProductAmount, remainingInventory, quantityAfterRefund) {
@@ -25,15 +32,13 @@ export class ManageOrderPage {
         cy.get(':nth-child(6) > table > thead > tr > :nth-child(1)').contains('ID')
         //placeholder for produict ID for MP refunds (Need to add actual code)
         cy.get(':nth-child(6) > table > tbody > tr > :nth-child(2)').contains(categoryName + " - " + setName + " - " + productName + " - " + conditionName)
-        cy.get(':nth-child(6) > div > span').contains("Refunded Shipping Cost: $"+refundShippingAmount)
+        cy.get(':nth-child(6) > div > span').contains("Refunded Shipping Cost: $" + refundShippingAmount)
         cy.get(':nth-child(6) > :nth-child(3)').contains("Refund Reason: Automation Test: Refund " + orderNumber)
         cy.get('.refundedQuantityHeader').contains('Refunded Qty')
         cy.get('tr > :nth-child(3) > span').contains('0')
         cy.get(':nth-child(6) > table > thead > tr > :nth-child(4)').contains('Refunded Amount')
-        cy.get(':nth-child(6) > table > tbody > tr > :nth-child(4)').contains("$"+refundProductAmount)
-        }
+        cy.get(':nth-child(6) > table > tbody > tr > :nth-child(4)').contains("$" + refundProductAmount)
+    }
 
-        
 }
-
-export const manageOrderPage = new ManageOrderPage()
+export const verifyPartialRefundItems = new VerifyPartialRefundItems()

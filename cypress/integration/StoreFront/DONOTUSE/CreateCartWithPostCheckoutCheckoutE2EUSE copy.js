@@ -1,18 +1,18 @@
 /// <reference types="cypress" />
 ///<reference types="cypress-iframe" />
 
-import { createCart } from "../../support/page_objects/umbraco/createCart"
-import { shoppingCartReviewPage } from "../../support/page_objects/umbraco/checkout"
-import { umbracoShoppingCart } from "../../support/page_objects/umbraco/umbracoShoppingCart"
+import { createCart } from "../../../support/page_objects/umbraco/createCart"
+import { shoppingCartReviewPage } from "../../../support/page_objects/umbraco/checkout"
+import { umbracoShoppingCart } from "../../../support/page_objects/umbraco/umbracoShoppingCart"
 
-import { partialRefundPageFunctions, verifyPartialRefundItems, assert } from "../../support/page_objects/admin/orders/partialRefund"
-import { admin } from "../../support/page_objects/admin/adminFunctions"
-import { internalApiJobs } from "../../support/page_objects/admin/adminSettings/internalApiJobs"
-import { manageOrderPage } from "../../support/page_objects/admin/orders/manageOrderPage"
+import { partialRefundPageFunctions, verifyPartialRefundItems, assert } from "../../../support/page_objects/admin/orders/refund/partialRefund"
+import { admin } from "../../../support/page_objects/admin/adminFunctions"
+import { internalApiJobs } from "../../../support/page_objects/admin/adminSettings/internalApi/internalApiJobs"
+import { manageOrderPage } from "../../../support/page_objects/admin/orders/mangaeOrderPage/manageOrderPage"
 
-import { databaseQueryFunctions } from "../../support/page_objects/database/databaseQueryFunctions"
-import { refundQueries } from "../../support/page_objects/database/refundQueries"
-import { shoppingCartQueries } from "../../support/page_objects/database/shoppingCartQueries"
+import { databaseQueryFunctions } from "../../../support/page_objects/databaseQueries/databaseQueryFunctions"
+import { refundQueries } from "../../../support/page_objects/databaseQueries/refund/refundQueries"
+import { shoppingCartQueries } from "../../../support/page_objects/databaseQueries/umbracoShoppingCart/shoppingCartQueries"
 
 
 
@@ -207,18 +207,13 @@ describe('Partial Refund for an Umbraco order', () => {
     cy.get('@refundProductAmount').then(refundProductAmount => {
       refundQueries.calculateCommissionFees(refundProductAmount)
       cy.get('@commissionFees').then(commissionFees => {
-        //assert.verifyFees(feeFile)
-
-
         cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
           cy.get('@refundedTax').then(refundedTax => {
             refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
             cy.get('@creditCardUSFees').then(creditCardUSFees => {
-
               cy.get('@refundShippingAmount').then(refundShippingAmount => {
                 refundQueries.calculateShippingFees(refundShippingAmount)
                 cy.get('@shippingFees').then(shippingFees => {
-
                   assert.verifyFees(feeFile, commissionFees, creditCardUSFees, shippingFees)
                 })
               })

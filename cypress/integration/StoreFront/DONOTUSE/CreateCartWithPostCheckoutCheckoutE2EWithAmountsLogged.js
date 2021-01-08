@@ -1,13 +1,13 @@
 /// <reference types="cypress" />
 ///<reference types="cypress-iframe" />
 
-import { createCart } from "../../support/page_objects/umbraco/createCart"
-import { shoppingCartReviewPage } from "../../support/page_objects/umbraco/checkout"
-import { umbracoShoppingCart } from "../../support/page_objects/umbraco/umbracoShoppingCart"
+import { createCart } from "../../../support/page_objects/umbraco/createCart"
+import { shoppingCartReviewPage } from "../../../support/page_objects/umbraco/checkout"
+import { umbracoShoppingCart } from "../../../support/page_objects/umbraco/umbracoShoppingCart"
 
 import { PartialRefundPage, VerifyPartialRefundItems } from "../../support/page_objects/admin/orders/partialRefund"
 import { VerifyPartialRefund } from "../../support/page_objects/admin/orders/partialRefund"
-import { admin } from "../../support/page_objects/admin/adminFunctions"
+import { admin } from "../../../support/page_objects/admin/adminFunctions"
 
 import { databaseQueryFunctions } from "../../support/page_objects/database/databaseQueryFunctions"
 import { refundQueries } from "../../support/page_objects/database/refundQueries"

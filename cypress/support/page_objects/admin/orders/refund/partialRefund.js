@@ -22,29 +22,11 @@ export const partialRefundPageFunctions = new PartialRefundPageFunctions()
 
 
 
-export class VerifyPartialRefundItems {
-
-    verifyPartialRefundNote() {
-        cy.get('.nNote-container').then(($systemNote) => {
-            const systemNote = $systemNote.text()
-            expect(systemNote).to.contain('Partial Refund Processed.')
-        })
-    }
-
-    verifyPartialRefundButton() {
-        cy.get('.widget-content .mUser').eq(1).then(($button) => {     //will be the 2nd button for the seller view
-            const button = $button.text().trim()
-            expect(button).to.contain('Partial Refund')
-        })
-    }
-
-}
-export const verifyPartialRefundItems = new VerifyPartialRefundItems()
 
 
 export class Assert {
 
-    VerifyRefundTable(readFile, totalRefundAmount, refundedTax, totalRefundAmountRequested, refundShippingAmount, messageText) {
+    verifyRefundTable(readFile, totalRefundAmount, refundedTax, totalRefundAmountRequested, refundShippingAmount, messageText) {
         cy.readFile(readFile).then((file) => {
             //OrderStatusId
             expect(file[0]).to.eql(3)
@@ -74,16 +56,16 @@ export class Assert {
     }
 
 
-    VerifyFees(readFile, commissionFees, creditCardUSFees, shippingFees) {
+    verifyFees(readFile, commissionFees, creditCardUSFees, shippingFees) {
         cy.readFile(readFile).then((file) => {
             const cf = parseFloat(commissionFees)
-            expect(readFile[0].[0]).to.eql(cf)
+            expect(file[0].[0]).to.eql(cf)
 
             const ccf = parseFloat(creditCardUSFees)
-            expect(readFile[1].[0]).to.eql(ccf)
+            expect(file[1].[0]).to.eql(ccf)
 
             const sf = parseFloat(shippingFees)
-            expect(readFile[2].[0]).to.eql(sf)
+            expect(file[2].[0]).to.eql(sf)
 
 
         })
