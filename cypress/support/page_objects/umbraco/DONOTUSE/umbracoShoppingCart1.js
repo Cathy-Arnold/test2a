@@ -1,3 +1,4 @@
+
 export class UmbracoShoppingCart {
 
     
@@ -20,7 +21,7 @@ export class UmbracoShoppingCart {
 
 
     //Shopping Cart
-    verifyPackageDetails(productName, setName, categoryName, rarity, conditionName, pricePerItem, purchasedQuantity, quantity) {
+    verifyPackageDetails(productName, setName , categoryName, rarity, conditionName, price, purchasedQuantity, quantity) {
         //Shopping Cart Header
         cy.get('.shoppingCartHeader').should('be.visible')
 
@@ -41,7 +42,7 @@ export class UmbracoShoppingCart {
         })
         cy.get('.itemsContents > p').then(($setCategoryName) => {      //Set and category name
             const setCategoryName = $setCategoryName.text()
-            expect(setCategoryName).to.eql(setName +" - "+ categoryName)
+            expect(setCategoryName).to.eql(setName+" - "+categoryName)
         })
         cy.get('.detailsContents > :nth-child(1)').then(($rarity) => {      //rarity
             const rarityUI = $rarity.text()
@@ -49,29 +50,29 @@ export class UmbracoShoppingCart {
         })
         cy.get('.detailsContents > :nth-child(2)').then(($condition) => {      //Condition
             const condition = $condition.text().trim()
-            expect(condition).to.eql("Condition: "+ conditionName)
+            expect(condition).to.eql("Condition: "+conditionName)
         })
         cy.get('.priceContents').then(($itemPrice) => {      //price of item
             const itemPrice = $itemPrice.text().trim()
-            expect(itemPrice).to.eql("$"+pricePerItem)
+            expect(itemPrice).to.eql("$"+price)
+        }) 
+
+        cy.get('#cartItemQty_1758107665').then(($itemQuantity) => {      //item Quantity
+          const itemQuantity = $itemQuantity.text().trim()
+          expect(itemQuantity).to.eql(purchasedQuantity)
         })
-        cy.get("#cartItemQty_"+cartItemId).then(($itemQuantity) => {      //item Quantity
-            const itemQuantity = $itemQuantity.text().trim()
-            expect(itemQuantity).to.eql(purchasedQuantity)
-          })
-          
-          
-          cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
-              const inventoryQuantity = $inventoryQuantity.text().trim()
-              expect(inventoryQuantity).to.eql("of "+quantity)
-          })
+        
+        
+        cy.get('.qtyContentsLeft > p').then(($inventoryQuantity) => {      //Text: 'of' inventory Quantity
+            const inventoryQuantity = $inventoryQuantity.text().trim()
+            expect(inventoryQuantity).to.eql("of "+quantity)
+        })
 
 
         cy.get('.update > .cartStyle > span').should('be.visible')    //Update
         cy.get('.remove').should('be.visible')   //remove
     }
 
-    
     verifyOrderSummary(purchasedQuantity, price, expeditedShippingId, expeditedPrice) {
         //Order Summary
         cy.get('#sellerSummary_'+Cypress.env("sellerId")+' > h2').should('be.visible')    //Order Summary text
@@ -84,9 +85,10 @@ export class UmbracoShoppingCart {
 
         cy.get('#sellerSummaryItemTotal_'+Cypress.env("sellerId")).then(($itemsDollarTotal) => {     // Items Dollar Total
             const itemsDollarTotal = $itemsDollarTotal.text()
-            expect(itemsDollarTotal).to.eql("$"+price+".00")
+            expect(itemsDollarTotal).to.eql("$"+price)
         })
-          ////Not using Free shipping ID in this.  No parameter set above.  Not tested.
+
+        ////Not using Free shipping ID in this.  No parameter set above.  Not tested.
         // cy.get("#sellerSummary_"+Cypress.env("sellerId")+" > :nth-child(7) > tbody > :nth-child(1) > td").should("be.visible")   //Shipping Options text
         // cy.get("#shippingColumn_"+Cypress.env("sellerId")+"_"+freeShippingId+" > .shippingText").should("be.visible")   //Free Shipping text
 
@@ -113,9 +115,10 @@ export class UmbracoShoppingCart {
         // cy.get(' #sellerSummary_'+Cypress.env("sellerId")+' > .subtotal > tbody > tr > :nth-child(1)').should('be.visible')   //Subtotal text
 
 
-        cy.get("#sellerSubtotal_"+Cypress.env("sellerId")).then(($subtotalAmount) => {     //Subtotal amount
+
+        cy.get(' #sellerSubtotal_'+Cypress.env("sellerId")).then(($subtotalAmount) => {     //Subtotal amount
             const subtotalAmount = $subtotalAmount.text()
-            expect(subtotalAmount).to.eql("$"+price+".00")
+            expect(subtotalAmount).to.eql("$"+price)
         })
 
     }

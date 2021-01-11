@@ -13,6 +13,16 @@ export class ShoppingcartReviewPage {
     })
 
   }
+
+ captureOrderNumber() {
+ cy.wait(25000)  //have to add wait statement since timeout below is not working.
+ cy.get('.card > :nth-child(1) > div > :nth-child(2)'), { timeout: 180000 }   //Will look for order number up to 3 minutes.  Ensures page loads.
+ cy.get('strong > :nth-child(2) > a').then(completedOrder => {
+   const orderNumber = completedOrder.text()
+   cy.wrap(orderNumber).as('orderNumber')
+ })
+}
+
 }
 
 export const shoppingCartReviewPage = new ShoppingcartReviewPage()
