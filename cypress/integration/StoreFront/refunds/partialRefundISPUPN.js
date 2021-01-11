@@ -1,28 +1,29 @@
 /// <reference types="cypress" />
 ///<reference types="cypress-iframe" />
 
-import { createCart } from "../../support/page_objects/umbraco/createCart"
-import { shoppingCartReviewPage } from "../../support/page_objects/umbraco/checkout"
-import { umbracoShoppingCart } from "../../support/page_objects/umbraco/umbracoShoppingCart"
+import { createCart } from "../../../support/page_objects/umbraco/createCart"
+import { shoppingCartReviewPage } from "../../../support/page_objects/umbraco/checkout"
+import { umbracoShoppingCart } from "../../../support/page_objects/umbraco/umbracoShoppingCart"
 
-import { partialRefundPageFunctions, verifyPartialRefundItems, assert } from "../../support/page_objects/admin/orders/refund/partialRefund"
-import { admin } from "../../support/page_objects/admin/adminFunctions"
-import { internalApiJobs } from "../../support/page_objects/admin/adminSettings/internalApi/internalApiJobs"
-import { manageOrderPage } from "../../support/page_objects/admin/orders/mangaeOrderPage/manageOrderPage"
+import { partialRefundPageFunctions, assert } from "../../../support/page_objects/admin/orders/refund/partialRefund"
+import { verifyPartialRefundItems } from "../../../support/page_objects/admin/orders/manageOrderPage/refundRelated/refund"
+import { admin } from "../../../support/page_objects/admin/adminFunctions"
+import { internalApiJobs } from "../../../support/page_objects/admin/adminSettings/internalApi/internalApiJobs"
+import { manageOrderPage } from "../../../support/page_objects/admin/orders/manageOrderPage/manageOrderPage"
 
-import { databaseQueryFunctions } from "../../support/page_objects/databaseQueries/databaseQueryFunctions"
-import { refundQueries } from "../../support/page_objects/databaseQueries/refund/refundQueries"
-import { shoppingCartQueries } from "../../support/page_objects/databaseQueries/umbracoShoppingCart/shoppingCartQueries"
+//import { databaseQueryFunctions } from "../../support/page_objects/databaseQueries/databaseQueryFunctions"
+import { refundQueries } from "../../../support/page_objects/databaseQueries/refund/refundQueries"
+import { shoppingCartQueries } from "../../../support/page_objects/databaseQueries/umbracoShoppingCart/shoppingCartQueries"
 
 
 
 describe('Partial Refund for an Umbraco order', () => {
 
   const buyerCookieName = "BuyerEmail6"
-  var buyerData = require('../../fixtures/buyer/umbraco/buyer')
-  var adminData = require('../../fixtures/admin/admin')
-  var passwordData = require('../../fixtures/password/standardPassword')
-  var productData = require('../../fixtures/products/partialRefund')
+  var buyerData = require('../../../fixtures/buyer/umbraco/buyer')
+  var adminData = require('../../../fixtures/admin/admin')
+  var passwordData = require('../../../fixtures/password/standardPassword')
+  var productData = require('../../../fixtures/products/partialRefund')
 
   it('Partial Refund for an Umbraco order', () => {
 
@@ -49,7 +50,6 @@ describe('Partial Refund for an Umbraco order', () => {
     refundQueries.getInventoryQuantity(productData.productConditionId)
 
 
-
     //Create headless cart 
     createCart.createCartVistShoppingCartPage(buyerData.buyerEmail6, productData.productConditionId, productData.purchasedQuantity)
     umbracoShoppingCart.setBuyerAuthCookie(buyerCookieName)
@@ -64,49 +64,25 @@ describe('Partial Refund for an Umbraco order', () => {
     cy.get('#btnCheckout1').click()
 
 
-
-    //Checkout Page
+    //Checkout
     cy.wait(25000)  //have to add wait statement since timeout below is not working.
     cy.get('[value="Mastercard"]'), { timeout: 180000 }   //Will look for Mastercard input box up to 3 minutes.  Ensures page loads.
     shoppingCartReviewPage.checkoutWithMasterCard()
-
-    // //Capture Order Number
-    // cy.wait(25000)  //have to add wait statement since timeout below is not working.
-    // cy.get('.card > :nth-child(1) > div > :nth-child(2)'), { timeout: 180000 }   //Will look for order number up to 3 minutes.  Ensures page loads.
-    // cy.get('strong > :nth-child(2) > a').then(completedOrder => {
-    //   const orderNumber = completedOrder.text()
-    //   cy.wrap(orderNumber).as('orderNumber')
-    //  })
-
     shoppingCartReviewPage.captureOrderNumber()
 
-    // //Log in as Admin headlessly and run order jobs
-    // const validateOrders = 'VALIDATEORDERSV2'
-    // const processAllFees = 'PROCESSALLFEES'
-    // admin.headlessLoginAdminSite(adminData.adminEmail, passwordData.password)
-    // cy.visit('https://store.tcgplayer-' + (Cypress.env("env")) + '.com/admin/InternalApi/StartJob')
-    // admin.verifyAdminLogin()
-    // internalApiJobs.runApiJob(validateOrders)
-    // internalApiJobs.runSendOrders()
-    //internalApiJobs.runApiJob(processAllFees)
 
+    //Process Order
     admin.headlessLoginAdminSite(adminData.adminEmail, passwordData.password)
     cy.visit('https://store.tcgplayer-' + (Cypress.env("env")) + '.com/admin/InternalApi/StartJob')
     admin.verifyAdminLogin()
     internalApiJobs.runOrderJobs()
 
     //Login headlessly as seller.  Process refund
-    //Create URL for Partial Refund page and visit the page
     admin.headlessLoginAdminSite((Cypress.env("sellerEmail")), passwordData.password)
     cy.get('@orderNumber').then(orderNumber => {
       manageOrderPage.visitManageOrderPage(orderNumber)
     })
     admin.verifySellerLogin()
-
-
-
-    //process partial refund
-    //Create text for refund message
     cy.get('@orderNumber').then(orderNumber => {
       const messageText = "Automation Test: Refund " + orderNumber
       cy.wrap(messageText).as('messageText')
@@ -125,48 +101,6 @@ describe('Partial Refund for an Umbraco order', () => {
     //Verify UI items on page after partial refund
     verifyPartialRefundItems.verifyPartialRefundNote()
     verifyPartialRefundItems.verifyPartialRefundButton()
-
-
-    //Verify Order calculations
-    //Get Tax applid to the order and calculate the refunded tax amount
-    cy.get('@orderNumber').then(orderNumber => {
-      refundQueries.getTcgTaxAmt(orderNumber)
-      // cy.get('@tcgTaxAmt').then(tcgTaxAmt => {
-      //   cy.log("TCGTaxAmt = " + tcgTaxAmt)
-      // })
-    })
-    cy.get('@tcgTaxAmt').then(tcgTaxAmt => {
-      refundQueries.calculateRefundedTax(tcgTaxAmt)
-      // cy.get('@refundedTax').then(refundedTax => {
-      //   cy.log("refundedTax = " + refundedTax)
-      // })
-    })
-
-
-
-
-    //get Refund table info
-    cy.get('@orderNumber').then(orderNumber => {
-      const refundTableFile = "cypress/fixtures/filesDuringTestRun/refundTablePartialRefundProStoreTcgTaxCC.json"
-      cy.wrap(refundTableFile).as('refundTableFile')
-      refundQueries.queryRefundTable(orderNumber, refundTableFile)
-    })
-    cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
-      cy.get('@refundedTax').then(refundedTax => {
-        refundQueries.calculateTotalRefundAmount(totalRefundAmountRequested, refundedTax)
-        cy.get('@totalRefundAmount').then(totalRefundAmount => {
-          cy.get('@refundShippingAmount').then(refundShippingAmount => {
-            cy.get('@messageText').then(messageText => {
-              cy.get('@refundTableFile').then(refundTableFile => {
-                assert.verifyRefundTable(refundTableFile, totalRefundAmount, refundedTax, totalRefundAmountRequested, refundShippingAmount, messageText, totalRefundAmount)
-              })
-            })
-          })
-        })
-      })
-    })
-
-
     //UI Checks
     cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
       //cy.get('@messageText').then(messageText => {
@@ -178,7 +112,7 @@ describe('Partial Refund for an Umbraco order', () => {
               refundQueries.calculateQuantityAfterRefund(Cypress.env("sellerId"), productData.productConditionId)
               cy.get('@remainingInventory').then(remainingInventory => {
                 cy.get('@quantityAfterRefund').then(quantityAfterRefund => {
-                  manageOrderPage.uIChecksAfterPartialRefund(totalRefundAmountRequested, productData.categoryName, productData.setName, productData.productName, productData.conditionName, refundShippingAmount, orderNumber, refundProductAmount, remainingInventory, quantityAfterRefund)
+                  verifyPartialRefundItems.uIChecksAfterPartialRefund(totalRefundAmountRequested, productData.categoryName, productData.setName, productData.productName, productData.conditionName, refundShippingAmount, orderNumber, refundProductAmount, remainingInventory, quantityAfterRefund)
                   // })
                 })
               })
@@ -190,44 +124,42 @@ describe('Partial Refund for an Umbraco order', () => {
 
 
 
-    //verifying fees
-    //get Refund table info
+    //Verify Refund calculations
+    //Get Tax applied to the order and calculate the refunded tax amount
     cy.get('@orderNumber').then(orderNumber => {
-      const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
-      cy.wrap(feeFile).as('feeFile')
-      refundQueries.queryFeeTable(orderNumber, feeFile)
-    })
-
-
-
-
-
-
-    // cy.get('@orderNumber').then(orderNumber => {
-    //   const feeQuery = ("Select sof.amt "
-    //     + " from dbo.SellerOrderFee sof  "
-    //     + "Inner Join dbo.SellerOrder so on sof.SellerOrderId = so.SellerOrderId "
-    //     + "Inner Join dbo.FeeType f on sof.FeeTypeId = f.FeeTypeId "
-    //     + "Where so.OrderNumber = '" + orderNumber + "' "
-    //     + "and sof.RateProcessingTypeId = 2 "
-    //     + "Order by f.Name")
-    //     const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
-    //   databaseQueryFunctions.queryDBWriteToFile(feeQuery, feeFile)
-
-
-
-    cy.get('@refundProductAmount').then(refundProductAmount => {
-      refundQueries.calculateCommissionFees(refundProductAmount)
-      cy.get('@commissionFees').then(commissionFees => {
-        cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
-          cy.get('@refundedTax').then(refundedTax => {
-            refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
-            cy.get('@creditCardUSFees').then(creditCardUSFees => {
-              cy.get('@refundShippingAmount').then(refundShippingAmount => {
-                refundQueries.calculateShippingFees(refundShippingAmount)
-                cy.get('@shippingFees').then(shippingFees => {
-                  cy.get('@feeFile').then(feeFile => {
-                  assert.verifyFees(feeFile, commissionFees, creditCardUSFees, shippingFees)
+      refundQueries.getTcgTaxAmt(orderNumber)
+      cy.get('@tcgTaxAmt').then(tcgTaxAmt => {
+        refundQueries.calculateRefundedTax(tcgTaxAmt)
+      })
+      //Refund table info
+      const refundTableFile = "cypress/fixtures/filesDuringTestRun/refundTablePartialRefundProStoreTcgTaxCC.json"
+      refundQueries.queryRefundTable(orderNumber, refundTableFile)
+      cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+        cy.get('@refundedTax').then(refundedTax => {
+          refundQueries.calculateTotalRefundAmount(totalRefundAmountRequested, refundedTax)
+          cy.get('@totalRefundAmount').then(totalRefundAmount => {
+            cy.get('@refundShippingAmount').then(refundShippingAmount => {
+              cy.get('@messageText').then(messageText => {
+                assert.verifyRefundTable(refundTableFile, totalRefundAmount, refundedTax, totalRefundAmountRequested, refundShippingAmount, messageText, totalRefundAmount)
+                //Fee Table Info
+                const feeFile = "cypress/fixtures/filesDuringTestRun/feeTablePartialRefundProStoreTcgTaxCC.json"
+                refundQueries.queryFeeTable(orderNumber, feeFile)
+                cy.get('@refundProductAmount').then(refundProductAmount => {
+                  refundQueries.calculateCommissionFees(refundProductAmount)
+                  cy.get('@commissionFees').then(commissionFees => {
+                    cy.get('@totalRefundAmountRequested').then(totalRefundAmountRequested => {
+                      cy.get('@refundedTax').then(refundedTax => {
+                        refundQueries.calculateCreditCardUSFees(totalRefundAmountRequested, refundedTax)
+                        cy.get('@creditCardUSFees').then(creditCardUSFees => {
+                          cy.get('@refundShippingAmount').then(refundShippingAmount => {
+                            refundQueries.calculateShippingFees(refundShippingAmount)
+                            cy.get('@shippingFees').then(shippingFees => {
+                              assert.verifyFees(feeFile, commissionFees, creditCardUSFees, shippingFees)
+                            })
+                          })
+                        })
+                      })
+                    })
                   })
                 })
               })
@@ -238,3 +170,4 @@ describe('Partial Refund for an Umbraco order', () => {
     })
   })
 })
+
